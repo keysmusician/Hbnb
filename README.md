@@ -1,166 +1,210 @@
-# AirBnB Clone - The Console
-The console is the first segment of the AirBnB project at Holberton School that will collectively cover fundamental concepts of higher level programming. The goal of AirBnB project is to eventually deploy our server a simple copy of the AirBnB Website(HBnB). A command interpreter is created in this segment to manage objects for the AirBnB(HBnB) website.
+<p align="center">
+  <a href=#>
+    <img src="https://s3.amazonaws.com/intranet-projects-files/holbertonschool-higher-level_programming+/263/HBTN-hbnb-Final.png" alt="Holberton School HBnB logo">
+  </a>
+</p>
 
-#### Functionalities of this command interpreter:
-* Create a new object (ex: a new User or a new Place)
-* Retrieve an object from a file, a database etc...
-* Do operations on objects (count, compute stats, etc...)
-* Update attributes of an object
-* Destroy an object
+<center>
+<h1>HBnB</h1>
+<em>Holberton School Air BnB clone</em>
+</center>
 
-## Table of Content
-* [Environment](#environment)
+## Table of Contents
+* [About](#about)
+	* [Technologies](#technologies)
 * [Installation](#installation)
-* [File Descriptions](#file-descriptions)
-* [Usage](#usage)
-* [Examples of use](#examples-of-use)
+* [The Console](#the-console)
+	* [HBnB CLI — The command interpreter](#hbnb-cli--the-command-interpreter)
+	* [Commands](#commands)
+	* [Usage](#usage)
+	* [Examples](#examples)
+* [Web Static](#web-static)
+* [Database](#database)
+* [Deploy Static](#deploy-static)
+* [Web Framework](#web-framework)
+* [REST API](#rest-api)
+	* [Usage](#usage-1)
+	* [Example](#example)
+	* [Endpoints](#endpoints)
+* [Web Dynamic](#web-dynamic)
 * [Bugs](#bugs)
 * [Authors](#authors)
 * [License](#license)
 
-## Environment
-This project is interpreted/tested on Ubuntu 14.04 LTS using python3 (version 3.4.3)
+## About
+HBnB is a clone of the Air BnB website. The project is divided into 7 parts:
+1. The Console
+2. Web Static
+3. Database
+4. Deploy Static
+5. Web Framework
+6. REST API
+7. Web Dynamic
+
+### Technologies
+This project was developed with the following tools:
+* **Environment**: Ubuntu 14.04 (Trusty)
+* **Codebase**: Python 3.4.3
+  * **ORM**: SQLAlchemy 1.2.5
+  * **Web Framework**: Flask 1.0.4
+* **Linter**: PEP8 1.7.0
+* **Database**: MySQL 5.7
 
 ## Installation
-* Clone this repository: `git clone "https://github.com/alexaorrico/AirBnB_clone.git"`
-* Access AirBnb directory: `cd AirBnB_clone`
-* Run hbnb(interactively): `./console` and enter command
-* Run hbnb(non-interactively): `echo "<command>" | ./console.py`
+To try any part of this project yourself, follow these instructions:
+1. Clone this repository: `git clone https://github.com/keysmusician/AirBnB_clone_v3.git`
+2. Install necessary dependencies:
+	* Python3
+	* Flask
+	* MySQL
+	* SQLAlchemy
+	* Fabric
 
-## File Descriptions
-[console.py](console.py) - the console contains the entry point of the command interpreter. 
-List of commands this console current supports:
-* `EOF` - exits console 
-* `quit` - exits console
-* `<emptyline>` - overwrites default emptyline method and does nothing
-* `create` - Creates a new instance of`BaseModel`, saves it (to the JSON file) and prints the id
-* `destroy` - Deletes an instance based on the class name and id (save the change into the JSON file). 
-* `show` - Prints the string representation of an instance based on the class name and id.
-* `all` - Prints all string representation of all instances based or not on the class name. 
-* `update` - Updates an instance based on the class name and id by adding or updating attribute (save the change into the JSON file). 
+	*Note: Not all dependencies are needed for every section of this project.*
 
-#### `models/` directory contains classes used for this project:
-[base_model.py](/models/base_model.py) - The BaseModel class from which future classes will be derived
-* `def __init__(self, *args, **kwargs)` - Initialization of the base model
-* `def __str__(self)` - String representation of the BaseModel class
-* `def save(self)` - Updates the attribute `updated_at` with the current datetime
-* `def to_dict(self)` - returns a dictionary containing all keys/values of the instance
+3. Set up the development database: `cat ./setup_mysql_dev.sql | mysql -root -p`
 
-Classes inherited from Base Model:
-* [amenity.py](/models/amenity.py)
-* [city.py](/models/city.py)
-* [place.py](/models/place.py)
-* [review.py](/models/review.py)
-* [state.py](/models/state.py)
-* [user.py](/models/user.py)
+## The Console
+The Console is the first stage of the HBnB clone. In it, we wrote classes for representing users and listings, a file storage engine for saving and recalling data between interactive sessions, as well as a command interpreter (the console), for easily managing our data. The console provides a backend interface to our storage engine(s).
 
-#### `/models/engine` directory contains File Storage class that handles JASON serialization and deserialization :
-[file_storage.py](/models/engine/file_storage.py) - serializes instances to a JSON file & deserializes back to instances
-* `def all(self)` - returns the dictionary __objects
-* `def new(self, obj)` - sets in __objects the obj with key <obj class name>.id
-* `def save(self)` - serializes __objects to the JSON file (path: __file_path)
-* ` def reload(self)` -  deserializes the JSON file to __objects
+### HBnB CLI — The command interpreter
+The HBnB CLI (command line interpreter) provides a convenient command line interface specifically to manage (add, delete, modify, etc.) HBnB data.
+It offers an improved workflow over alternatives such as embedding data in the source code, manually managing a data file, or using the Python interpreter to manage the data.
 
-#### `/tests` directory contains all unit test cases for this project:
-[/test_models/test_base_model.py](/tests/test_models/test_base_model.py) - Contains the TestBaseModel and TestBaseModelDocs classes
-TestBaseModelDocs class:
-* `def setUpClass(cls)`- Set up for the doc tests
-* `def test_pep8_conformance_base_model(self)` - Test that models/base_model.py conforms to PEP8
-* `def test_pep8_conformance_test_base_model(self)` - Test that tests/test_models/test_base_model.py conforms to PEP8
-* `def test_bm_module_docstring(self)` - Test for the base_model.py module docstring
-* `def test_bm_class_docstring(self)` - Test for the BaseModel class docstring
-* `def test_bm_func_docstrings(self)` - Test for the presence of docstrings in BaseModel methods
+### Commands
+Bracketed arguments are optional.
+* `all [CLASS]` - Show all objects.
+* `create CLASS` - Create a new object.
+* `destroy CLASS ID` - Destroy a specified instance.
+* `help [COMMAND]` - Get information about a command.
+* `quit` - Close an interactive session. Also quit with `^-D` or `EOF`.
+* `show CLASS ID` - Display a single instance.
+* `update CLASS ID ATTRIBUTE VALUE` - Edit attributes of an instance.
 
-TestBaseModel class:
-* `def test_is_base_model(self)` - Test that the instatiation of a BaseModel works
-* `def test_created_at_instantiation(self)` - Test created_at is a pub. instance attribute of type datetime
-* `def test_updated_at_instantiation(self)` - Test updated_at is a pub. instance attribute of type datetime
-* `def test_diff_datetime_objs(self)` - Test that two BaseModel instances have different datetime objects
+### Usage
+Start an interactive HBnB CLI session by executing `console.py`:
 
-[/test_models/test_amenity.py](/tests/test_models/test_amenity.py) - Contains the TestAmenityDocs class:
-* `def setUpClass(cls)` - Set up for the doc tests
-* `def test_pep8_conformance_amenity(self)` - Test that models/amenity.py conforms to PEP8
-* `def test_pep8_conformance_test_amenity(self)` - Test that tests/test_models/test_amenity.py conforms to PEP8
-* `def test_amenity_module_docstring(self)` - Test for the amenity.py module docstring
-* `def test_amenity_class_docstring(self)` - Test for the Amenity class docstring
+`./console.py`
 
-[/test_models/test_city.py](/tests/test_models/test_city.py) - Contains the TestCityDocs class:
-* `def setUpClass(cls)` - Set up for the doc tests
-* `def test_pep8_conformance_city(self)` - Test that models/city.py conforms to PEP8
-* `def test_pep8_conformance_test_city(self)` - Test that tests/test_models/test_city.py conforms to PEP8
-* `def test_city_module_docstring(self)` - Test for the city.py module docstring
-* `def test_city_class_docstring(self)` - Test for the City class docstring
+If it runs successfully, it will display the prompt and await input:
 
-[/test_models/test_file_storage.py](/tests/test_models/test_file_storage.py) - Contains the TestFileStorageDocs class:
-* `def setUpClass(cls)` - Set up for the doc tests
-* `def test_pep8_conformance_file_storage(self)` - Test that models/file_storage.py conforms to PEP8
-* `def test_pep8_conformance_test_file_storage(self)` - Test that tests/test_models/test_file_storage.py conforms to PEP8
-* `def test_file_storage_module_docstring(self)` - Test for the file_storage.py module docstring
-* `def test_file_storage_class_docstring(self)` - Test for the FileStorage class docstring
+`(hbnb) `
 
-[/test_models/test_place.py](/tests/test_models/test_place.py) - Contains the TestPlaceDoc class:
-* `def setUpClass(cls)` - Set up for the doc tests
-* `def test_pep8_conformance_place(self)` - Test that models/place.py conforms to PEP8.
-* `def test_pep8_conformance_test_place(self)` - Test that tests/test_models/test_place.py conforms to PEP8.
-* `def test_place_module_docstring(self)` - Test for the place.py module docstring
-* `def test_place_class_docstring(self)` - Test for the Place class docstring
+Simply type any valid command(s) listed above. Type `quit` to exit the interactive session.
 
-[/test_models/test_review.py](/tests/test_models/test_review.py) - Contains the TestReviewDocs class:
-* `def setUpClass(cls)` - Set up for the doc tests
-* `def test_pep8_conformance_review(self)` - Test that models/review.py conforms to PEP8
-* `def test_pep8_conformance_test_review(self)` - Test that tests/test_models/test_review.py conforms to PEP8
-* `def test_review_module_docstring(self)` - Test for the review.py module docstring
-* `def test_review_class_docstring(self)` - Test for the Review class docstring
+The HBnB CLI may also be used non-non-interactively by piping input to it from a shell:
 
-[/test_models/state.py](/tests/test_models/test_state.py) - Contains the TestStateDocs class:
-* `def setUpClass(cls)` - Set up for the doc tests
-* `def test_pep8_conformance_state(self)` - Test that models/state.py conforms to PEP8
-* `def test_pep8_conformance_test_state(self)` - Test that tests/test_models/test_state.py conforms to PEP8
-* `def test_state_module_docstring(self)` - Test for the state.py module docstring
-* `def test_state_class_docstring(self)` - Test for the State class docstring
-
-[/test_models/user.py](/tests/test_models/test_user.py) - Contains the TestUserDocs class:
-* `def setUpClass(cls)` - Set up for the doc tests
-* `def test_pep8_conformance_user(self)` - Test that models/user.py conforms to PEP8
-* `def test_pep8_conformance_test_user(self)` - Test that tests/test_models/test_user.py conforms to PEP8
-* `def test_user_module_docstring(self)` - Test for the user.py module docstring
-* `def test_user_class_docstring(self)` - Test for the User class docstring
+`$ echo "help" | ./console.py`
 
 
-## Examples of use
+### Examples
 ```
-vagrantAirBnB_clone$./console.py
 (hbnb) help
 
 Documented commands (type help <topic>):
 ========================================
 EOF  all  create  destroy  help  quit  show  update
 
-(hbnb) all MyModel
-** class doesn't exist **
-(hbnb) create BaseModel
-7da56403-cc45-4f1c-ad32-bfafeb2bb050
-(hbnb) all BaseModel
-[[BaseModel] (7da56403-cc45-4f1c-ad32-bfafeb2bb050) {'updated_at': datetime.datetime(2017, 9, 28, 9, 50, 46, 772167), 'id': '7da56403-cc45-4f1c-ad32-bfafeb2bb050', 'created_at': datetime.datetime(2017, 9, 28, 9, 50, 46, 772123)}]
-(hbnb) show BaseModel 7da56403-cc45-4f1c-ad32-bfafeb2bb050
-[BaseModel] (7da56403-cc45-4f1c-ad32-bfafeb2bb050) {'updated_at': datetime.datetime(2017, 9, 28, 9, 50, 46, 772167), 'id': '7da56403-cc45-4f1c-ad32-bfafeb2bb050', 'created_at': datetime.datetime(2017, 9, 28, 9, 50, 46, 772123)}
-(hbnb) destroy BaseModel 7da56403-cc45-4f1c-ad32-bfafeb2bb050
-(hbnb) show BaseModel 7da56403-cc45-4f1c-ad32-bfafeb2bb050
-** no instance found **
-(hbnb) quit
+(hbnb) create Place
+aba364fd-8b9e-4c4b-b865-8db6a6e9bc03
+
+(hbnb) all
+["[Place] (aba364fd-8b9e-4c4b-b865-8db6a6e9bc03) {'created_at': datetime.datetime(2021, 7, 1, 13, 29, 27, 264673), 'id': 'aba364fd-8b9e-4c4b-b865-8db6a6e9bc03', 'updated_at': datetime.datetime(2021, 7, 1, 13, 29, 27, 264832)}"]
+(hbnb)
 ```
 
+## Web Static
+The Web Static part of this project consisted of designing the website HTML and CSS.
+
+## Database
+In the Database stage, we built a second storage engine---database storage. This one uses a MySQL database and SQLAlchemy to manage data persistence. We introduced the following environment variables:
+* `HBNB_MYSQL_USER`
+* `HBNB_MYSQL_PWD`
+* `HBNB_MYSQL_HOST`
+* `HBNB_MYSQL_DB`
+* `HBNB_TYPE_STORAGE`
+
+If `HBNB_TYPE_STORAGE` = `db`, The database storage engine will be use, which depends upon the values of the other environment variables to establish a connection to a database. Consequently, the specified database must exist *and* contain the expected tables. `setup_mysql_dev.sql` sets up a development environment database and user.
+
+Additionally, both storage engines' classes have the same methods implemented to provide seamless toggling between them. The SQLAlchemy ORM required significant additions to our models in order to properly link them to a database.
+
+## Deploy Static
+In this stage, we set up an Nginx web server and deployed our static files using Fabric---at least, that was the plan...
+
+## Web Framework
+In the Web Framework stage we learned how to set up routes in Flask and create Jinja templates. That allowed us to create dynamic HTML using data pulled from our MySQL database.
+
+## REST API
+In this section of the project, we built a REST API. Our Flask blueprint and views for the API can be found in the `api` directory. Our API base URL is `<host>/api/v1/`.
+
+### Usage
+Note that for the purposes of this project, we hosted locally with the built in development server that comes with Flask. The following environment variables determine the host and port the development server will use:
+* `HBNB_API_HOST`
+* `HBNB_API_PORT`
+
+Unless specified, the host and port default to `0.0.0.0` and `5000` respectively.
+To try this API yourself, follow the [installation](#installation) steps, launch our API on the Flask development server, and go to `http://0.0.0.0:5000/api/v1/<endpoint>`. A successful request returns JSON.
+
+### Example
+Running the development server:
+```
+$ python3 -m api.v1.app
+ * Serving Flask app "app" (lazy loading)
+. . .
+ * Running on http://0.0.0.0:5000/ (Press CTRL+C to quit)
+```
+Requesting an endpoint:
+```
+$ curl http://0.0.0.0:5000/api/v1/stats
+{
+  "amenities": 1,
+  "cities": 1,
+  "places": 1,
+  "reviews": 1,
+  "states": 1,
+  "users": 1
+}
+```
+
+
+### Endpoints
+The following are the endpoints we defined and their corresponding supported HTTP methods:
+|Endpoint|Methods|
+|--------|-------|
+|`/amenities/`| GET, POST |
+|`/amenities/<amenity_id>`| DELETE, GET, PUT |
+|`/cities/<city_id>`| DELETE, GET, PUT |
+|`/cities/<city_id>/places`|  GET, POST |
+|`/places/<place_id>`| DELETE, GET, PUT |
+|`/places/<place_id>/reviews`| GET, POST |
+|`/reviews/<review_id>`| DELETE, GET, PUT |
+|`/states/<state_id>/cities`|  GET, POST |
+|`/stats`| GET |
+|`/states/`| GET, POST |
+|`/states/<state_id>`| DELETE, GET, PUT |
+|`/status`| GET |
+|`/users/`| GET, POST |
+|`/users/<user_id>`| DELETE, GET, PUT |
+
+## Web Dynamic
+**COMING SOON**
+
 ## Bugs
-No known bugs at this time. 
+No known bugs.
 
 ## Authors
-Alexa Orrico - [Github](https://github.com/alexaorrico) / [Twitter](https://twitter.com/alexa_orrico)  
-Jennifer Huang - [Github](https://github.com/jhuang10123) / [Twitter](https://twitter.com/earthtojhuang)  
-Jhoan Zamora - [Github](https://github.com/jzamora5) / [Twitter](https://twitter.com/JhoanZamora10)  
-David Ovalle - [Github](https://github.com/Nukemenonai) / [Twitter](https://twitter.com/disartDave)
-Nels Fichera - [Github, here] / [Twitter] (https://twitter.com/nelsfichera)
-Justin Masayda - [Github] (https://github.com/keysmusician)
+### V1 authors:
+Alexa Orrico - [Github](https://github.com/alexaorrico) / [Twitter](https://twitter.com/alexa_orrico)
 
-Second part of Airbnb: Joann Vuong
+Jennifer Huang - [Github](https://github.com/jhuang10123) / [Twitter](https://twitter.com/earthtojhuang)
+
+### V2 Authors:
+Joann Vuong
+
+### V3 Authors:
+Justin Masayda [@keysmusician](https://github.com/keysmusician)
+
+Carson Stearn [@krytech](https://github.com/krytech)
+
 ## License
-Public Domain. No copy write protection. 
+All rights reserved.
