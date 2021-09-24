@@ -48,11 +48,13 @@ This project was developed with the following tools:
 * **Environment**: Ubuntu 14.04 (Trusty)
 * **Codebase**: Python 3.4.3
   * **ORM**: SQLAlchemy 1.2.5
+  * **Database connector**: MySQLdb/mysqlclient 2.0.3
   * **Web Framework**: Flask 1.0.4
-  * Flask-CORSs 3.0.10
-  * Flasgger 0.9.5
+  	* Flask-CORSs 3.0.10
+  	* Flasgger 0.9.5
 * **Linter**: PEP8 1.7.0
 * **Database**: MySQL 5.7
+* **Just ignore this one**: Fabric ?
 
 ## Installation
 To try any part of this project yourself, follow these instructions:
@@ -61,13 +63,22 @@ To try any part of this project yourself, follow these instructions:
 	* Fabric
 	* Flasgger
 	* Flask
+	* Flask-CORS
 	* MySQL
+	* MySQLdb/mysqlclient
 	* Python3
 	* SQLAlchemy
 
 	*Note: Not all dependencies are needed for every section of this project.*
 
-3. Set up the development database: `cat ./setup_mysql_dev.sql | mysql -root -p`
+3. Change directory: `cd AirBnB_clone_v4`
+
+3. If you'd like to use the database storage engine:
+	* Set up the development database: `cat ./setup_mysql_dev.sql | mysql -root -p`
+	* Set the environment variables for development: `HBNB_MYSQL_USER=hbnb_dev HBNB_MYSQL_PWD=hbnb_dev_pwd HBNB_MYSQL_HOST=localhost HBNB_MYSQL_DB=hbnb_dev_db HBNB_TYPE_STORAGE=db`
+4. If you'd like to run the database storage tests:
+	* set up the test database: `cat ./setup_mysql_test.sql | mysql -root -p`
+	* Set the environment variables for testing: `HBNB_MYSQL_USER=hbnb_test HBNB_MYSQL_PWD=hbnb_test_pwd HBNB_MYSQL_HOST=localhost HBNB_MYSQL_DB=hbnb_test_db HBNB_TYPE_STORAGE=db`
 
 ## The Console
 The Console is the first stage of the HBnB clone. In it, we wrote classes for representing users and listings, a file storage engine for saving and recalling data between interactive sessions, as well as a command interpreter (the console), for easily managing our data. The console provides a backend interface to our storage engine(s).
@@ -210,6 +221,9 @@ Joann Vuong
 Justin Masayda [@keysmusician](https://github.com/keysmusician)
 
 Carson Stearn [@krytech](https://github.com/krytech)
+
+### V4 Authors:
+Justin Masayda [@keysmusician](https://github.com/keysmusician)
 
 ## License
 All rights reserved.
