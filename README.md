@@ -47,6 +47,8 @@ This project was developed with the following tools:
 * **Codebase**: Python 3.4.3
   * **ORM**: SQLAlchemy 1.2.5
   * **Web Framework**: Flask 1.0.4
+  * Flask-CORSs 3.0.10
+  * Flasgger 0.9.5
 * **Linter**: PEP8 1.7.0
 * **Database**: MySQL 5.7
 
@@ -54,11 +56,12 @@ This project was developed with the following tools:
 To try any part of this project yourself, follow these instructions:
 1. Clone this repository: `git clone https://github.com/keysmusician/AirBnB_clone_v3.git`
 2. Install necessary dependencies:
-	* Python3
+	* Fabric
+	* Flasgger
 	* Flask
 	* MySQL
+	* Python3
 	* SQLAlchemy
-	* Fabric
 
 	*Note: Not all dependencies are needed for every section of this project.*
 
@@ -129,7 +132,7 @@ If `HBNB_TYPE_STORAGE` = `db`, The database storage engine will be use, which de
 Additionally, both storage engines' classes have the same methods implemented to provide seamless toggling between them. The SQLAlchemy ORM required significant additions to our models in order to properly link them to a database.
 
 ## Deploy Static
-In this stage, we set up an Nginx web server and deployed our static files using Fabric---at least, that was the plan...
+In this stage, we set up an Nginx web server and deployed our static files using Fabric—at least, that was the plan...
 
 ## Web Framework
 In the Web Framework stage we learned how to set up routes in Flask and create Jinja templates. That allowed us to create dynamic HTML using data pulled from our MySQL database.
