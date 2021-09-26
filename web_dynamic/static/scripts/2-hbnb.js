@@ -1,3 +1,4 @@
+const $ = window.$;
 $(_ => {
   checkAPIStatus();
   showSelectedAmenities();

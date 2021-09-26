@@ -1,3 +1,4 @@
+const $ = window.$;
 $(function () {
   const amenityIDs = new Map();
   // Select all amenities checkboxes; Listen for checks
