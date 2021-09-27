@@ -1,7 +1,7 @@
 $(_ => {
   checkAPIStatus();
   showSelectedAmenities();
-  loadPlaces();
+  populatePlace();
 });
 
 function checkAPIStatus () {
@@ -35,7 +35,7 @@ function showSelectedAmenities () {
 }
 
 // Use asynchronous request to load data from the front end
-function loadPlaces () {
+function populatePlace () {
   $.ajax({
     url: 'http://0.0.0.0:5001/api/v1/places_search',
     crossDomain: true,
