@@ -1,6 +1,7 @@
 $(_ => {
   checkAPIStatus();
   showSelectedAmenities();
+  loadPlaces();
 });
 
 function checkAPIStatus () {
@@ -34,61 +35,63 @@ function showSelectedAmenities () {
 }
 
 // Use asynchronous request to load data from the front end
-$.ajax({
-  url: 'http://0.0.0.0:5001/api/v1/places_search',
-  crossDomain: true,
-  type: 'POST',
-  dataType: 'json',
-  contentType: 'application/json',
-  data: JSON.stringify({}),
-  success: function (data) {
-    // write html using ajax
-    data.forEach(place => {
-      // first div
-      const articleNode = document.createElement('ARTICLE');
-      let outerDiv = document.createElement('DIV');
-      const placeNameH2 = document.createElement('H2');
-      let innerDiv = document.createElement('DIV');
-      placeNameH2.appendChild(document.createTextNode(place.name));
-      innerDiv.appendChild(document.createTextNode('$' + place.price_by_night));
-      outerDiv.appendChild(placeNameH2);
-      outerDiv.appendChild(innerDiv);
-      articleNode.appendChild(outerDiv);
-      outerDiv.classList.add('title_box');
-      innerDiv.classList.add('price_by_night');
-      // Information div
-      // guests
-      outerDiv = document.createElement('DIV');
-      innerDiv = document.createElement('DIV');
-      innerDiv.classList.add('max_guest');
-      const guest = place.max_guest !== 1 ? 'Guests' : 'Guest';
-      innerDiv.appendChild(document.createTextNode(guest + ' ' + place.max_guest));
-      outerDiv.appendChild(innerDiv);
-      // rooms
-      innerDiv = document.createElement('DIV');
-      innerDiv.classList.add('number_rooms');
-      const room = place.max_guest !== 1 ? 'Rooms' : 'Room';
-      innerDiv.appendChild(document.createTextNode(room + ' ' + place.number_rooms));
-      outerDiv.appendChild(innerDiv);
-      // bathrooms
-      innerDiv = document.createElement('DIV');
-      innerDiv.classList.add('number_bathrooms');
-      const bathroom = place.max_guest !== 1 ? 'Bathrooms' : 'Bathroom';
-      innerDiv.appendChild(document.createTextNode(bathroom + ' ' + place.number_bathrooms));
-      outerDiv.appendChild(innerDiv);
+function loadPlaces () {
+  $.ajax({
+    url: 'http://0.0.0.0:5001/api/v1/places_search',
+    crossDomain: true,
+    type: 'POST',
+    dataType: 'json',
+    contentType: 'application/json',
+    data: JSON.stringify({}),
+    success: function (data) {
+      // write html using ajax
+      data.forEach(place => {
+        // first div
+        const articleNode = document.createElement('ARTICLE');
+        let outerDiv = document.createElement('DIV');
+        const placeNameH2 = document.createElement('H2');
+        let innerDiv = document.createElement('DIV');
+        placeNameH2.appendChild(document.createTextNode(place.name));
+        innerDiv.appendChild(document.createTextNode('$' + place.price_by_night));
+        outerDiv.appendChild(placeNameH2);
+        outerDiv.appendChild(innerDiv);
+        articleNode.appendChild(outerDiv);
+        outerDiv.classList.add('title_box');
+        innerDiv.classList.add('price_by_night');
+        // Information div
+        // guests
+        outerDiv = document.createElement('DIV');
+        innerDiv = document.createElement('DIV');
+        innerDiv.classList.add('max_guest');
+        const guest = place.max_guest !== 1 ? 'Guests' : 'Guest';
+        innerDiv.appendChild(document.createTextNode(guest + ' ' + place.max_guest));
+        outerDiv.appendChild(innerDiv);
+        // rooms
+        innerDiv = document.createElement('DIV');
+        innerDiv.classList.add('number_rooms');
+        const room = place.max_guest !== 1 ? 'Rooms' : 'Room';
+        innerDiv.appendChild(document.createTextNode(room + ' ' + place.number_rooms));
+        outerDiv.appendChild(innerDiv);
+        // bathrooms
+        innerDiv = document.createElement('DIV');
+        innerDiv.classList.add('number_bathrooms');
+        const bathroom = place.max_guest !== 1 ? 'Bathrooms' : 'Bathroom';
+        innerDiv.appendChild(document.createTextNode(bathroom + ' ' + place.number_bathrooms));
+        outerDiv.appendChild(innerDiv);
 
-      outerDiv.classList.add('information');
-      articleNode.appendChild(outerDiv);
-      // description div
-      outerDiv = document.createElement('DIV');
-      outerDiv.classList.add('description');
-      outerDiv.insertAdjacentHTML('beforeend', place.description);
-      articleNode.appendChild(outerDiv);
+        outerDiv.classList.add('information');
+        articleNode.appendChild(outerDiv);
+        // description div
+        outerDiv = document.createElement('DIV');
+        outerDiv.classList.add('description');
+        outerDiv.insertAdjacentHTML('beforeend', place.description);
+        articleNode.appendChild(outerDiv);
 
-      $('.places')[0].appendChild(articleNode);
-    });
-  },
-  error: function () {
-    console.log('Cannot get data');
-  }
-});
+        $('.places')[0].appendChild(articleNode);
+      });
+    },
+    error: function () {
+      console.log('Cannot get data');
+    }
+  });
+}
