@@ -1,12 +1,13 @@
+const amenityIDs = new Map();
 $(_ => {
   checkAPIStatus();
   showSelectedAmenities();
-  getPlace('', {}, populatePlace);
+  getPlace('', { amenities: Array.from(amenityIDs.keys()) }, populatePlace);
 
   // on click event for search button
   $('button').on('click', function () {
     $('.places').empty();
-    getPlace('', { amenities: 'amenityIDs' }, populatePlace);
+    getPlace('', { amenities: Array.from(amenityIDs.keys()) }, populatePlace);
   });
 });
 
@@ -19,7 +20,6 @@ function checkAPIStatus () {
 }
 
 function showSelectedAmenities () {
-  const amenityIDs = new Map();
   // Select all amenities checkboxes; Listen for checks
   $('div.amenities div.popover ul li input').change(function (event) {
     if (this.checked) {
