@@ -46,15 +46,21 @@ HBnB is a clone of the Air BnB website. The project is divided into 7 parts:
 ### Technologies
 This project was developed with the following tools:
 * **Environment**: Ubuntu 14.04 (Trusty)
-* **Codebase**: Python 3.4.3
+* ** Application Codebase**: Python 3.4.3
   * **ORM**: SQLAlchemy 1.2.5
   * **Database connector**: MySQLdb/mysqlclient 2.0.3
+  	* Greenlet 1.1.1
   * **Web Framework**: Flask 1.0.4
   	* Flask-CORSs 3.0.10
   	* Flasgger 0.9.5
 * **Linter**: PEP8 1.7.0
 * **Database**: MySQL 5.7
-* **Just ignore this one**: Fabric ?
+* <del> **Web deployment**: Fabric </del>
+* **Web stack**
+	* HTML5
+	* CSS3
+	* JavaScript 1.7
+		* jQuery 3.2.1
 
 ## Installation
 To try any part of this project yourself, follow these instructions:
@@ -133,16 +139,22 @@ aba364fd-8b9e-4c4b-b865-8db6a6e9bc03
 The Web Static part of this project consisted of designing the website HTML and CSS.
 
 ## Database
-In the Database stage, we built a second storage engine---database storage. This one uses a MySQL database and SQLAlchemy to manage data persistence. We introduced the following environment variables:
+In the Database stage, we built a second storage engine: database storage. This engine uses a MySQL database and SQLAlchemy to manage data persistence. We introduced the following environment variables:
 * `HBNB_MYSQL_USER`
 * `HBNB_MYSQL_PWD`
 * `HBNB_MYSQL_HOST`
 * `HBNB_MYSQL_DB`
 * `HBNB_TYPE_STORAGE`
 
-If `HBNB_TYPE_STORAGE` = `db`, The database storage engine will be use, which depends upon the values of the other environment variables to establish a connection to a database. Consequently, the specified database must exist *and* contain the expected tables. `setup_mysql_dev.sql` sets up a development environment database and user.
+If `HBNB_TYPE_STORAGE` = `db`, the database storage engine will be used. The values of the other environment variables are used to establish a connection to a MySQL database. Consequently, the specified database must exist *and* contain the expected tables.
+Both storage engines' classes have the same methods implemented to provide seamless toggling between them. The SQLAlchemy ORM required significant additions to our models in order to properly link them to a database.
 
-Additionally, both storage engines' classes have the same methods implemented to provide seamless toggling between them. The SQLAlchemy ORM required significant additions to our models in order to properly link them to a database.
+`setup_mysql_dev.sql` sets up a development environment database and user. Use the following environmant variables to use the developent environment:
+```HBNB_MYSQL_USER=hbnb_dev HBNB_MYSQL_PWD=hbnb_dev_pwd HBNB_MYSQL_HOST=localhost HBNB_MYSQL_DB=hbnb_dev_db HBNB_TYPE_STORAGE=db```
+
+`setup_mysql_test.sql` sets up a test database and user. Use this database and user when running tests.
+Use the following environmant variables to use the test environment:
+```HBNB_MYSQL_USER=hbnb_test HBNB_MYSQL_PWD=hbnb_test_pwd HBNB_MYSQL_HOST=localhost HBNB_MYSQL_DB=hbnb_test_db HBNB_TYPE_STORAGE=db```
 
 ## Deploy Static
 In this stage, we set up an Nginx web server and deployed our static files using Fabric—at least, that was the plan...
@@ -203,7 +215,7 @@ The following are the endpoints we defined and their corresponding supported HTT
 |`/users/<user_id>`| DELETE, GET, PUT |
 
 ## Web Dynamic
-**COMING SOON**
+In this final phase of the project, we wrote jQuery scripts 
 
 ## Bugs
 No known bugs.
