@@ -59,7 +59,7 @@ This project was developed with the following tools:
 * **Web stack**
 	* HTML5
 	* CSS3
-	* JavaScript
+	* JavaScript 1.7
 		* jQuery 3.2.1
 
 ## Installation
