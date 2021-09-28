@@ -2,12 +2,12 @@ const amenityIDs = new Map();
 $(_ => {
   checkAPIStatus();
   showSelectedAmenities();
-  getPlace('', { amenities: Array.from(amenityIDs.keys()) }, populatePlace);
+  getPlace({ amenities: Array.from(amenityIDs.keys()) }, populatePlace);
 
-  // on click event for search button
+  // Add click listener for search button
   $('button').on('click', function () {
     $('.places').empty();
-    getPlace('', { amenities: Array.from(amenityIDs.keys()) }, populatePlace);
+    getPlace({ amenities: Array.from(amenityIDs.keys()) }, populatePlace);
   });
 });
 
@@ -28,10 +28,7 @@ function showSelectedAmenities () {
       amenityIDs.delete(this.dataset.id);
     }
     let text = Array.from(amenityIDs.values()).join(', ');
-    // Truncate long text
-    if (text.length > 37) {
-      text = text.substring(0, 37) + '...';
-    } else if (text.length === 0) {
+    if (text.length === 0) {
       // Use a non-breaking space as a placeholder to maintain document format
       text = '&nbsp;';
     }
@@ -87,8 +84,8 @@ function populatePlace (data) {
   });
 }
 
-// Use asynchronous request to load data from the front end
-function getPlace (url, filters, successCallBack) {
+// Request the API to load data from the front end
+function getPlace (filters, successCallBack) {
   $.ajax({
     url: 'http://0.0.0.0:5001/api/v1/places_search',
     crossDomain: true,
