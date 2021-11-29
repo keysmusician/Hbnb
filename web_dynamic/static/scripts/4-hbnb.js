@@ -2,10 +2,22 @@ const amenityIDs = new Map();
 $(_ => {
   checkAPIStatus();
   showSelectedAmenities();
-  getPlace({ amenities: Array.from(amenityIDs.keys()) }, populatePlace);
+  const url = 'http://0.0.0.0:5001/api/v1/places_search';
+  const data = JSON.stringify({
+    amenities: Array.from(amenityIDs.keys())
+  });
+  const ajaxSettings = {
+    url: url,
+    crossDomain: true,
+    type: 'POST',
+    contentType: 'application/json',
+    data: data,
+    success: populatePlace
+  };
+  $.post(ajaxSettings);
 
-  // Add click listener for search button
-  $('button').on('click', function () {
+  // Add click listener on search button
+  $('button').on('click', _ => {
     $('.places').empty();
     getPlace({ amenities: Array.from(amenityIDs.keys()) }, populatePlace);
   });
@@ -86,7 +98,7 @@ function populatePlace (data) {
 
 // Request the API to load data from the front end
 function getPlace (filters, successCallBack) {
-  $.ajax({
+  $.post({
     url: 'http://0.0.0.0:5001/api/v1/places_search',
     crossDomain: true,
     type: 'POST',
