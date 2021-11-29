@@ -1,0 +1,5 @@
+Pipfile
+Pipfile.lock
+.env
+file.json
+data.py
