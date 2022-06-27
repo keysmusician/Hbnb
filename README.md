@@ -46,7 +46,7 @@ HBnB is a clone of the Air BnB website. The project is divided into 7 parts:
 ### Technologies
 This project was developed with the following tools:
 * **Environment**: Ubuntu 14.04 (Trusty)
-* ** Application Codebase**: Python 3.4.3
+* **Application Codebase**: Python 3.4.3
   * **ORM**: SQLAlchemy 1.2.5
   * **Database connector**: MySQLdb/mysqlclient 2.0.3
   	* Greenlet 1.1.1
@@ -70,6 +70,7 @@ To try any part of this project yourself, follow these instructions:
 	* Flasgger
 	* Flask
 	* Flask-CORS
+	* Greenlet
 	* MySQL
 	* MySQLdb/mysqlclient
 	* Python3
@@ -215,7 +216,13 @@ The following are the endpoints we defined and their corresponding supported HTT
 |`/users/<user_id>`| DELETE, GET, PUT |
 
 ## Web Dynamic
-In this final phase of the project, we wrote jQuery scripts 
+In this final phase of the project, we wrote jQuery scripts which dynamically update portions of the website. We added:
+
+* An API status indicator
+* Dynamic display of selected amenities
+* Frontend requests to the API for search results
+* Dynamically updated HTML based on the API’s response
+
 
 ## Bugs
 No known bugs.
