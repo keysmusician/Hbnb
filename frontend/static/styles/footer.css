@@ -1,0 +1,36 @@
+footer {
+    align-items: center;
+    background: white;
+    border-top: .5px solid #CCCCCC;
+    bottom: 0;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    height: 50px;
+    justify-content: space-between;
+    position: fixed;
+    width: 100%;
+}
+
+footer .left, footer .right {
+    flex-grow: 1;
+    flex-basis: 0;
+}
+
+footer .right {
+    text-align: end;
+}
+
+footer .center {
+    text-align: center;
+    padding: 0px 20px;
+}
+
+footer i:hover {
+    color: #ff545f;
+}
+
+footer a:visited {
+    color: #484848;
+}

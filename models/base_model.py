@@ -1,33 +1,35 @@
 #!/usr/bin/python3
 """
-Contains class BaseModel
+Defines the `BaseModel` class.
 """
 from datetime import datetime
-import models
+from models import storage_engine, STORAGE_TYPE
 from sqlalchemy import Column, String, DateTime
-from sqlalchemy.ext.declarative import declarative_base
 import uuid
+
 
 time = "%Y-%m-%dT%H:%M:%S.%f"
 
-if models.storage_t == "db":
-    Base = declarative_base()
-else:
-    Base = object
-
 
 class BaseModel:
-    """The BaseModel class from which future classes will be derived"""
-    if models.storage_t == "db":
+    """
+    Common model attributes.
+    """
+
+    storage_engine = storage_engine
+
+    if STORAGE_TYPE == "db":
         id = Column(String(60), primary_key=True)
         created_at = Column(DateTime, default=datetime.utcnow)
         updated_at = Column(DateTime, default=datetime.utcnow)
 
     def __init__(self, *args, **kwargs):
-        """Initialization of the base model"""
+        """
+        Initializes a BaseModel.
+        """
         if kwargs:
             for key, value in kwargs.items():
-                if key != "__class__":
+                if key != "__class__" and key != 'key':
                     setattr(self, key, value)
             if kwargs.get("created_at", None) and type(self.created_at) is str:
                 self.created_at = datetime.strptime(kwargs["created_at"], time)
@@ -45,18 +47,37 @@ class BaseModel:
             self.updated_at = self.created_at
 
     def __str__(self):
-        """String representation of the BaseModel class"""
-        return "[{:s}] ({:s}) {}".format(self.__class__.__name__, self.id,
-                                         self.__dict__)
+        """
+        Represents the class as a string.
+        """
+        return "[{:s}] ({:s}) {}".format(
+            self.__class__.__name__, self.id, self.__dict__)
+
+    def delete(self):
+        """
+        Deletes the current instance from storage.
+        """
+        storage_engine.delete(self)
+
+    @property
+    def key(self):
+        """
+        An identifying key for the model instance.
+        """
+        return f'{self.__class__.__name__}.{self.id}'
 
     def save(self):
-        """updates the attribute 'updated_at' with the current datetime"""
+        """
+        Saves a model to persistent storage.
+        """
         self.updated_at = datetime.utcnow()
-        models.storage.new(self)
-        models.storage.save()
+        storage_engine.new(self)
+        storage_engine.save()
 
     def to_dict(self, save_fs=None):
-        """returns a dictionary containing all keys/values of the instance"""
+        """
+        Returns a dictionary representation of the instance.
+        """
         new_dict = self.__dict__.copy()
         if "created_at" in new_dict:
             new_dict["created_at"] = new_dict["created_at"].strftime(time)
@@ -68,8 +89,5 @@ class BaseModel:
         if save_fs is None:
             if "password" in new_dict:
                 del new_dict["password"]
-        return new_dict
 
-    def delete(self):
-        """delete the current instance from the storage"""
-        models.storage.delete(self)
+        return new_dict

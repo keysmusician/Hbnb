@@ -1,17 +1,20 @@
 #!/usr/bin/python3
 """
-initialize the models package
+Constructs a storage engine.
 """
-
 from os import getenv
+from sqlalchemy.ext.declarative import declarative_base
 
 
-storage_t = getenv("HBNB_TYPE_STORAGE")
+STORAGE_TYPE = getenv("HBNB_TYPE_STORAGE")
 
-if storage_t == "db":
+if STORAGE_TYPE == "db":
+    Base = declarative_base()
     from models.engine.db_storage import DBStorage
-    storage = DBStorage()
+    storage_engine = DBStorage()
 else:
+    Base = object
     from models.engine.file_storage import FileStorage
-    storage = FileStorage()
-storage.reload()
+    storage_engine = FileStorage()
+
+storage_engine.reload()

@@ -2,14 +2,14 @@
 """
 Contains the TestReviewDocs classes
 """
-
-from datetime import datetime
 import inspect
 import models
 from models import review
 from models.base_model import BaseModel
 import pep8
 import unittest
+
+
 Review = review.Review
 
 
@@ -71,7 +71,7 @@ class TestReview(unittest.TestCase):
         """Test Review has attr place_id, and it's an empty string"""
         review = Review()
         self.assertTrue(hasattr(review, "place_id"))
-        if models.storage_t == 'db':
+        if models.STORAGE_TYPE == 'db':
             self.assertEqual(review.place_id, None)
         else:
             self.assertEqual(review.place_id, "")
@@ -80,7 +80,7 @@ class TestReview(unittest.TestCase):
         """Test Review has attr user_id, and it's an empty string"""
         review = Review()
         self.assertTrue(hasattr(review, "user_id"))
-        if models.storage_t == 'db':
+        if models.STORAGE_TYPE == 'db':
             self.assertEqual(review.user_id, None)
         else:
             self.assertEqual(review.user_id, "")
@@ -89,7 +89,7 @@ class TestReview(unittest.TestCase):
         """Test Review has attr text, and it's an empty string"""
         review = Review()
         self.assertTrue(hasattr(review, "text"))
-        if models.storage_t == 'db':
+        if models.STORAGE_TYPE == 'db':
             self.assertEqual(review.text, None)
         else:
             self.assertEqual(review.text, "")

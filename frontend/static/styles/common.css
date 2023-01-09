@@ -1,0 +1,19 @@
+body {
+    margin: 0;
+    padding: 0;
+    color: #484848;
+    font-size: 14px;
+    font-family: 'Montserrat',Circular,'Helvetica Neue',Helvetica,Arial,sans-serif;
+}
+
+body .container {
+    max-width: 920px;
+    margin: 30px auto;
+}
+
+body > header,
+#filters,
+body > main,
+body > footer {
+    padding: 0px 80px;
+}

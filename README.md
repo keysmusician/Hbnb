@@ -6,7 +6,7 @@
 
 <center>
 <h1>Hbnb</h1>
-<em>My official and final repository for the "AirBnB clone" Holberton School projects in which we built an Airbnb-like web application.</em>
+<em>The completed version of the "AirBnB clone" Holberton School project.</em>
 </center>
 
 ## Table of Contents
@@ -161,7 +161,21 @@ Use the following environment variables to use the test environment:
 In this stage, we set up an Nginx web server and deployed our static files using Fabric—at least, that was the plan...
 
 ## Web Framework
-In the Web Framework stage we learned how to set up routes in Flask and create Jinja templates. That allowed us to create dynamic HTML using data pulled from our MySQL database.
+In the Web Framework stage we created a dynamic web application using Flask as our frontend application framework. We learned how to set up routes in Flask and create Jinja templates. That allowed us to create dynamic HTML using data pulled from our MySQL database.
+
+The following environment variables determine the host and port the development server will use:
+* `HBNB_FRONTEND_HOST`
+* `HBNB_FRONTEND_PORT`
+
+The recommended way to serve the frontend locally is to launch Flask's development server with `FLASK_APP=frontend/hbnb.py FLASK_DEBUG=1 flask run`. By default, Flask binds to `localhost:5000`. You may specify a host and port or use the environment variables described above with `FLASK_APP=web_flask/hbnb.py FLASK_DEBUG=1 flask run --host="$HBNB_FRONTEND_HOST" --port "$HBNB_FRONTEND_PORT"`.
+
+Alternatively, the server may be launched from the *root* directory of this repository with `python3 -m web_flask.hbnb`. Unless specified in the environment variables, the host and port default to `0.0.0.0` and `5001` respectively.
+
+Notes on launching the web application server: 
+- Executing with `./web_flask/hbnb.py` will not use your virtual environment's version of python. In addition:
+
+- Executing with a python interpreter and path (relative or absolute) such as `python ./web_flask/hbnb.py` won't work because the modules being imported won't be found. `hbnb.py` needs to be imported as a module from the root of the project directory.
+
 
 ## REST API
 In this section of the project, we built a REST API. Our Flask blueprint and views for the API can be found in the `api` directory. Our API base URL is `<host>/api/v1/`.
@@ -171,8 +185,8 @@ Note that for the purposes of this project, we hosted locally with the built in 
 * `HBNB_API_HOST`
 * `HBNB_API_PORT`
 
-Unless specified, the host and port default to `0.0.0.0` and `5000` respectively.
-To try this API yourself, follow the [installation](#installation) steps, launch our API on the Flask development server, and go to `http://0.0.0.0:5000/api/v1/<endpoint>`. A successful request returns JSON.
+Unless specified, the host and port default to `0.0.0.0` and `5002` respectively.
+To try this API yourself, follow the [installation](#installation) steps, launch our API on the Flask development server, and go to `http://0.0.0.0:5002/api/v1/<endpoint>`. A successful request returns JSON.
 
 ### Example
 Running the development server:
@@ -180,11 +194,11 @@ Running the development server:
 $ python3 -m api.v1.app
  * Serving Flask app "app" (lazy loading)
 . . .
- * Running on http://0.0.0.0:5000/ (Press CTRL+C to quit)
+ * Running on http://0.0.0.0:5002/ (Press CTRL+C to quit)
 ```
 Requesting an endpoint:
 ```
-$ curl http://0.0.0.0:5000/api/v1/stats
+$ curl http://0.0.0.0:5002/api/v1/stats
 {
   "amenities": 1,
   "cities": 1,
@@ -208,12 +222,14 @@ The following are the endpoints we defined and their corresponding supported HTT
 |`/places/<place_id>/reviews`| GET, POST |
 |`/reviews/<review_id>`| DELETE, GET, PUT |
 |`/states/<state_id>/cities`|  GET, POST |
-|`/stats`| GET |
+|~~`/stats`~~ `/summary` *| GET |
 |`/states/`| GET, POST |
 |`/states/<state_id>`| DELETE, GET, PUT |
 |`/status`| GET |
 |`/users/`| GET, POST |
 |`/users/<user_id>`| DELETE, GET, PUT |
+
+\* I renamed this in my version.
 
 ## Web Dynamic
 In this final phase of the project, we wrote jQuery scripts which dynamically update portions of the website. We added:

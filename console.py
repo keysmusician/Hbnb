@@ -1,8 +1,6 @@
 #!/usr/bin/python3
 """ console """
-
 import cmd
-from datetime import datetime
 import models
 from models.amenity import Amenity
 from models.base_model import BaseModel
@@ -13,12 +11,13 @@ from models.state import State
 from models.user import User
 import shlex  # for splitting the line along spaces except in double quotes
 
+
 classes = {"Amenity": Amenity, "BaseModel": BaseModel, "City": City,
            "Place": Place, "Review": Review, "State": State, "User": User}
 
 
 class HBNBCommand(cmd.Cmd):
-    """ HBNH console """
+    """ HBNB console """
     prompt = '(hbnb) '
 
     def do_EOF(self, arg):
@@ -78,8 +77,8 @@ class HBNBCommand(cmd.Cmd):
         if args[0] in classes:
             if len(args) > 1:
                 key = args[0] + "." + args[1]
-                if key in models.storage.all():
-                    print(models.storage.all()[key])
+                if key in models.storage_engine.all():
+                    print(models.storage_engine.all()[key])
                 else:
                     print("** no instance found **")
             else:
@@ -95,9 +94,9 @@ class HBNBCommand(cmd.Cmd):
         elif args[0] in classes:
             if len(args) > 1:
                 key = args[0] + "." + args[1]
-                if key in models.storage.all():
-                    models.storage.all().pop(key)
-                    models.storage.save()
+                if key in models.storage_engine.all():
+                    models.storage_engine.all().pop(key)
+                    models.storage_engine.save()
                 else:
                     print("** no instance found **")
             else:
@@ -110,9 +109,9 @@ class HBNBCommand(cmd.Cmd):
         args = shlex.split(arg)
         obj_list = []
         if len(args) == 0:
-            obj_dict = models.storage.all()
+            obj_dict = models.storage_engine.all()
         elif args[0] in classes:
-            obj_dict = models.storage.all(classes[args[0]])
+            obj_dict = models.storage_engine.all(classes[args[0]])
         else:
             print("** class doesn't exist **")
             return False
@@ -133,7 +132,7 @@ class HBNBCommand(cmd.Cmd):
         elif args[0] in classes:
             if len(args) > 1:
                 k = args[0] + "." + args[1]
-                if k in models.storage.all():
+                if k in models.storage_engine.all():
                     if len(args) > 2:
                         if len(args) > 3:
                             if args[0] == "Place":
@@ -147,8 +146,8 @@ class HBNBCommand(cmd.Cmd):
                                         args[3] = float(args[3])
                                     except:
                                         args[3] = 0.0
-                            setattr(models.storage.all()[k], args[2], args[3])
-                            models.storage.all()[k].save()
+                            setattr(models.storage_engine.all()[k], args[2], args[3])
+                            models.storage_engine.all()[k].save()
                         else:
                             print("** value missing **")
                     else:
