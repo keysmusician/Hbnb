@@ -144,6 +144,7 @@ def places_search():
 
         amenity_ids = data.get('amenities', None)
 
+    # If there were no filters applied, return all places
     if (not data or not len(data) or (
             not state_ids and
             not city_ids and
@@ -178,7 +179,9 @@ def places_search():
             list_places = storage_engine.all(Place).values()
 
         amenities = [
-            storage_engine.get(Amenity, amenity_id) for amenity_id in amenity_ids]
+            storage_engine.get(Amenity, amenity_id)
+            for amenity_id in amenity_ids
+        ]
 
         list_places = [
             place for place in list_places if

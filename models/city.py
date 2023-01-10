@@ -13,6 +13,12 @@ class City(BaseModel, Base):
     A city.
     """
 
+    def __init__(self, *args, name, state_id, **kwargs):
+        """
+        Initializes a City.
+        """
+        super().__init__(*args, name=name, state_id=state_id, **kwargs)
+
     if STORAGE_TYPE == "db":
         __tablename__ = 'cities'
         state_id = Column(String(60), ForeignKey('states.id'), nullable=False)
@@ -23,8 +29,14 @@ class City(BaseModel, Base):
         state_id = ""
         name = ""
 
-    def __init__(self, *args, name, state_id, **kwargs):
-        """
-        Initializes a City.
-        """
-        super().__init__(*args, name=name, state_id=state_id, **kwargs)
+        @property
+        def places(self):
+            """
+            Lists all places in the city.
+            """
+            from models.place import Place
+
+            return [
+                place for place in self.storage_engine.all(Place).values()
+                if place.city_id == self.id
+            ]

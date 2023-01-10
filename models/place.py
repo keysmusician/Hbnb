@@ -116,10 +116,9 @@ class Place(BaseModel, Base):
             """
             from models.amenity import Amenity
 
-            amenities = self.storage_engine.all(Amenity).values()
-
             return [
-                amenity for amenity in amenities if amenity.place_id == self.id
+                self.storage_engine.get(Amenity, amenity_id)
+                for amenity_id in self.amenity_ids
             ]
 
         @property

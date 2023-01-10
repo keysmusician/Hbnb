@@ -43,8 +43,6 @@ def hbnb():
 
     amenities = sorted(storage_engine.all(Amenity).values(), key=sort_by_name)
 
-    print(amenities)
-
     places = sorted(storage_engine.all(Place).values(), key=sort_by_name)
 
     return render_template(

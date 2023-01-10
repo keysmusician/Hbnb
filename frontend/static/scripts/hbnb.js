@@ -1,13 +1,15 @@
-const amenityIDs = new Map();
+const selected_amenities = new Map();
+const selected_cities = new Map();
 
 const API_root = 'http://0.0.0.0:5002/api/v1/'
 
 $(_ => {
   checkAPIStatus();
-  showSelectedAmenities();
+  selectAmenities();
+  selectCities();
   const url = API_root + 'places_search';
   const amenity_JSON = JSON.stringify({
-    amenities: Array.from(amenityIDs.keys())
+    amenities: Array.from(selected_amenities.keys())
   });
   const ajaxSettings = {
     url: url,
@@ -22,7 +24,11 @@ $(_ => {
   // Add click listener on search button
   $('button').on('click', _ => {
     $('.places').empty();
-    searchPlaces({ amenities: Array.from(amenityIDs.keys()) }, populatePlace);
+    const filters = {
+      amenities: Array.from(selected_amenities.keys()),
+      cities: Array.from(selected_cities.keys())
+    };
+    searchPlaces(filters, populatePlace);
   });
 });
 
@@ -35,21 +41,39 @@ function checkAPIStatus () {
   });
 }
 
-function showSelectedAmenities () {
+function selectAmenities () {
   // Select all amenities checkboxes; Listen for checks
   $('div.amenities div.popover ul li input').change(function (event) {
     if (this.checked) {
-      amenityIDs.set(this.dataset.id, this.dataset.name);
+      selected_amenities.set(this.dataset.id, this.dataset.name);
     } else {
-      amenityIDs.delete(this.dataset.id);
+      selected_amenities.delete(this.dataset.id);
     }
-    let text = Array.from(amenityIDs.values()).join(', ');
+    let text = Array.from(selected_amenities.values()).join(', ');
     if (text.length === 0) {
       // Use a non-breaking space as a placeholder to maintain document format
       text = '&nbsp;';
     }
     // Update the text of the <h4> showing selected amenities
     $('div.amenities h4').html(text);
+  });
+}
+
+function selectCities () {
+  // Select all amenities checkboxes; Listen for checks
+  $('div.locations div.popover ul li input').change(function (event) {
+    if (this.checked) {
+      selected_cities.set(this.dataset.id, this.dataset.name);
+    } else {
+      selected_cities.delete(this.dataset.id);
+    }
+    let text = Array.from(selected_cities.values()).join(', ');
+    if (text.length === 0) {
+      // Use a non-breaking space as a placeholder to maintain document format
+      text = '&nbsp;';
+    }
+    // Update the text of the <h4> showing selected amenities
+    $('div.locations h4').html(text);
   });
 }
 

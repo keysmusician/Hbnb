@@ -22,7 +22,7 @@ class FileStorage(StorageEngineBase):
     # Stores all objects by <class name>.id
     __objects = {}
 
-    def all(self, model=None):
+    def all(self, model=None) -> dict:
         """
         Returns all stored objects, optionally of a given model.
 
