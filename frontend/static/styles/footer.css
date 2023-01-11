@@ -14,8 +14,8 @@ footer {
 }
 
 footer .left, footer .right {
-    flex-grow: 1;
     flex-basis: 0;
+    flex-grow: 1;
 }
 
 footer .right {
@@ -23,8 +23,8 @@ footer .right {
 }
 
 footer .center {
-    text-align: center;
     padding: 0px 20px;
+    text-align: center;
 }
 
 footer i:hover {

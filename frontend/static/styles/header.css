@@ -1,11 +1,11 @@
 header {
     align-items: center;
     background: white;
+    border-bottom: .5px solid #CCCCCC;
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
     height: 80px;
-    border-bottom: .5px solid #CCCCCC;
 }
 
 header #logo img{
