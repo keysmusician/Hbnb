@@ -131,7 +131,6 @@ def places_search():
     """
     Retrieves all Place objects matching the search query.
     """
-
     if request.get_json() is None:
         abort(400, description="Not a JSON")
 

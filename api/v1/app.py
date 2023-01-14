@@ -45,5 +45,6 @@ if __name__ == "__main__":
     app.run(
         host=environ.get('HBNB_API_HOST', '0.0.0.0'),
         port=environ.get('HBNB_API_PORT', '5002'),
+        debug=True,
         threaded=True
     )
