@@ -1,7 +1,7 @@
 #filters {
     align-items: center;
     background: white;
-    border-bottom: .5px solid #DDDDDD;
+    box-shadow: rgba(134, 142, 149, 0.2) 0px 4px 4px -2px;
     box-sizing: border-box;
     display: flex;
     flex-flow: row;
@@ -114,15 +114,6 @@
 .amenities:hover .popover,
 .locations:hover .popover {
     visibility: visible;
-}
-
-
-
-@media only screen and (max-width: 1030px) {
-    #filters {
-        width: 90%;
-        margin: 0 auto;
-    }
 }
 
 @media only screen and (max-width: 600px) {
