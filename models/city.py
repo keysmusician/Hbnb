@@ -40,3 +40,12 @@ class City(BaseModel, Base):
                 place for place in self.storage_engine.all(Place).values()
                 if place.city_id == self.id
             ]
+
+        @property
+        def state(self):
+            """
+            The State the City is located in.
+            """
+            from models.state import State
+
+            return self.storage_engine.get(State, self.state_id)

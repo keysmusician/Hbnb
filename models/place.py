@@ -99,17 +99,6 @@ class Place(BaseModel, Base):
         amenity_ids = []
 
         @property
-        def reviews(self):
-            """
-            Review instances.
-            """
-            from models.review import Review
-
-            reviews = self.storage_engine.all(Review).values()
-
-            return [review for review in reviews if review.place_id == self.id]
-
-        @property
         def amenities(self):
             """
             Amenities available at the Place.
@@ -120,6 +109,26 @@ class Place(BaseModel, Base):
                 self.storage_engine.get(Amenity, amenity_id)
                 for amenity_id in self.amenity_ids
             ]
+
+        @property
+        def city(self):
+            """
+            The City the Place is located in.
+            """
+            from models.city import City
+
+            return self.storage_engine.get(City, self.city_id)
+
+        @property
+        def reviews(self):
+            """
+            Review instances.
+            """
+            from models.review import Review
+
+            reviews = self.storage_engine.all(Review).values()
+
+            return [review for review in reviews if review.place_id == self.id]
 
         @property
         def user(self):

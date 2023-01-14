@@ -25,7 +25,7 @@ class Review(BaseModel, Base):
         text = ""
         # rating = 0
 
-    def __init__(self, *args, place_id, user_id, text, rating, **kwargs):
+    def __init__(self, *args, place_id, user_id, text, **kwargs):
         """
         Initializes a Review.
         """
@@ -34,6 +34,6 @@ class Review(BaseModel, Base):
             place_id=place_id,
             user_id=user_id,
             text=text,
-            rating=rating,
+            # rating=rating,
             **kwargs
         )
