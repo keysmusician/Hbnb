@@ -17,7 +17,7 @@ class FileStorage(StorageEngineBase):
     """
 
     # Path to the JSON file
-    __file_path = "Hbnb_FileStorage.json"
+    __file_path = "data/Hbnb_FileStorage.json"
 
     # Stores all objects by <class name>.id
     __objects = {}
