@@ -1,5 +1,5 @@
 <p align="center">
-  <a href=#>
+  <a href="https://hbnb.fly.dev/">
     <img src="https://s3.amazonaws.com/intranet-projects-files/holbertonschool-higher-level_programming+/263/HBTN-hbnb-Final.png" alt="Holberton School HBnB logo">
   </a>
 </p>
@@ -7,6 +7,8 @@
 <center>
 <h1>Hbnb</h1>
 <em>The completed version of the "AirBnB clone" Holberton School project.</em>
+
+[See it on Fly.io here: hbnb.fly.dev/](https://hbnb.fly.dev/)
 </center>
 
 ## Table of Contents
