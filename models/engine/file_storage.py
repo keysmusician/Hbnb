@@ -1,104 +1,132 @@
 #!/usr/bin/python3
 """
-Contains the FileStorage class
+Defines the file storage engine.
 """
-
 import json
-import models
-from models.amenity import Amenity
-from models.base_model import BaseModel
-from models.city import City
-from models.place import Place
-from models.review import Review
-from models.state import State
-from models.user import User
-from hashlib import md5
-
-classes = {"Amenity": Amenity, "BaseModel": BaseModel, "City": City,
-           "Place": Place, "Review": Review, "State": State, "User": User}
+from models.engine.storage_engine_base import StorageEngineBase
 
 
-class FileStorage:
-    """serializes instances to a JSON file & deserializes back to instances"""
+class FileStorage(StorageEngineBase):
+    """
+    JSON serializer/deserializer for models.
 
-    # string - path to the JSON file
-    __file_path = "file.json"
-    # dictionary - empty but will store all objects by <class name>.id
+    __file_path: The path of the file to store the JSON serialized objects.
+
+    __objects: Holds objects in memory between serialization and
+        deserialization.
+    """
+
+    # Path to the JSON file
+    __file_path = "data/Hbnb_FileStorage.json"
+
+    # Stores all objects by <class name>.id
     __objects = {}
 
-    def all(self, cls=None):
-        """returns the dictionary __objects"""
-        if cls is not None:
-            new_dict = {}
+    def all(self, model=None) -> dict:
+        """
+        Returns all stored objects, optionally of a given model.
+
+        model: A model or model name.
+        """
+        if model is not None:
+            stored_objects = {}
+
             for key, value in self.__objects.items():
-                if cls == value.__class__ or cls == value.__class__.__name__:
-                    new_dict[key] = value
-            return new_dict
+                if (model is value.__class__ or
+                        model == value.__class__.__name__):
+                    stored_objects[key] = value
+
+            return stored_objects
+
         return self.__objects
 
-    def new(self, obj):
-        """sets in __objects the obj with key <obj class name>.id"""
-        if obj is not None:
-            key = obj.__class__.__name__ + "." + obj.id
-            self.__objects[key] = obj
+    def close(self):
+        """
+        Closes this storage engine instance.
 
-    def save(self):
-        """serializes __objects to the JSON file (path: __file_path)"""
-        json_objects = {}
-        for key in self.__objects:
-            if key == "password":
-                json_objects[key].decode()
-            json_objects[key] = self.__objects[key].to_dict(save_fs=1)
-        with open(self.__file_path, 'w') as f:
-            json.dump(json_objects, f)
+        Does nothing for this FileStorage engine, but this function exists to
+        be compatible with the storage engine API.
+        """
+        #self.save()
+        pass
 
-    def reload(self):
-        """deserializes the JSON file to __objects"""
+    def delete(self, object=None):
+        """
+        Deletes a model instance.
+        """
         try:
-            with open(self.__file_path, 'r') as f:
-                jo = json.load(f)
-            for key in jo:
-                self.__objects[key] = classes[jo[key]["__class__"]](**jo[key])
+            del self.__objects[object.key]
+        except:
+            print(
+                f'{self.__class__.__name__}.delete: Could not delete object:'
+                f'{object}'
+            )
+
+    def get(self, model, id):
+        """
+        Returns a model instance by (model or model name) and ID.
+
+        model: (str | type) Model or model name.
+
+        Returns `None` if not found.
+        """
+        model_name = model.__name__ if type(model) is type else model
+
+        key = f'{model_name}.{id}'
+
+        try:
+            return self.__objects[key]
         except:
             pass
 
-    def delete(self, obj=None):
-        """delete obj from __objects if it’s inside"""
-        if obj is not None:
-            key = obj.__class__.__name__ + '.' + obj.id
-            if key in self.__objects:
-                del self.__objects[key]
-
-    def close(self):
-        """call reload() method for deserializing the JSON file to objects"""
-        self.reload()
-
-    def get(self, cls, id):
+    def new(self, object):
         """
-        Returns the object based on the class name and its ID, or
-        None if not found
+        Adds a model instance to the session.
+
+        Object keys are `<obj class name>.id`.
         """
-        if cls not in classes.values():
-            return None
+        self.__objects[object.key] = object
 
-        all_cls = models.storage.all(cls)
-        for value in all_cls.values():
-            if (value.id == id):
-                return value
-
-        return None
-
-    def count(self, cls=None):
+    def reload(self):
         """
-        count the number of objects in storage
+        Deserializes objects from a JSON file.
         """
-        all_class = classes.values()
+        class_map = {cls.__name__: cls for cls in self.models}
 
-        if not cls:
-            count = 0
-            for clas in all_class:
-                count += len(models.storage.all(clas).values())
-        else:
-            count = len(models.storage.all(cls).values())
+        try:
+            with open(self.__file_path, 'r') as f:
+                JSON_object = json.load(f)
 
-        return count
+            for key in JSON_object:
+                cls = class_map[JSON_object[key]["__class__"]]
+                self.__objects[key] = cls(**JSON_object[key])
+        except FileNotFoundError:
+            print(
+                f'{__class__}.reload: '
+                'WARNING: Could not load objects from file '
+                f"'{self.__file_path}'. File not found."
+            )
+            pass
+        except Exception as e:
+            print(
+                f'{__class__}.reload: '
+                'WARNING: Could not load objects from file '
+                f"'{self.__file_path}'.", e
+            )
+
+    def save(self):
+        """
+        Serializes objects to a JSON file.
+
+        See `__file_path` for the name of the file.
+        """
+        json_objects = {}
+
+        for key in self.__objects:
+            if key == "password":
+                json_objects[key].decode()
+
+            json_objects[key] = self.__objects[key].to_dict(save_fs=1)
+
+        with open(self.__file_path, 'w') as f:
+            json.dump(json_objects, f)
