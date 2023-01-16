@@ -18,7 +18,8 @@
 	<link rel="stylesheet" type="text/css" href="../static/styles/filters.css?{{ cache_id }}">
 	<link type="text/css" rel="stylesheet" href="../static/styles/places.css?{{ cache_id }}">
 	<link rel="icon" href="../static/images/icon.png?{{ cache_id }}" />
-	<script type="text/javascript" src="../static/scripts/hbnb.js?{{ cache_id }}"></script>
+	<script type="module" type="text/javascript" src="../static/scripts/api_root.js?{{ cache_id }}"></script>
+	<script type="module" type="text/javascript" src="../static/scripts/hbnb.js?{{ cache_id }}"></script>
 	<title>Hbnb</title>
 </head>
 
@@ -75,27 +76,28 @@
 	</section>
 	<main class="container">
 		<section id="places">
-			<!-- <h1>Places</h1> -->
 			{% for place in places %}
-			<article>
-				<div class="title_box">
-					<h2>{{ place.name }}</h2>
-				</div>
-				<div class="city">
-					<b>{{ place.city.name }}, {{ place.city.state.name }}</b>
-				</div>
-				<div class="information">
-					<div class="max_guest">{{ place.max_guest }} Guest{% if place.max_guest != 1 %}s{% endif %}</div>
-					<div class="number_rooms">{{ place.number_rooms }} Bedroom{% if place.number_rooms != 1 %}s{% endif %}</div>
-					<div class="number_bathrooms">{{ place.number_bathrooms }} Bathroom{% if place.number_bathrooms != 1%}s{% endif %}</div>
-				</div>
-				<div class="description">
-					{{ place.description | safe }}
-				</div>
-				<div class="price_by_night">
-					<b>${{ place.price_by_night }}</b> night
-				</div>
-			</article>
+			<a href="/places/{{ place.id }}">
+				<article>
+					<div class="title_box">
+						<h2>{{ place.name }}</h2>
+					</div>
+					<div class="city">
+						<b>{{ place.city.name }}, {{ place.city.state.name }}</b>
+					</div>
+					<div class="information">
+						<div class="max_guest">{{ place.max_guest }} Guest{% if place.max_guest != 1 %}s{% endif %}</div>
+						<div class="number_rooms">{{ place.number_rooms }} Bedroom{% if place.number_rooms != 1 %}s{% endif %}</div>
+						<div class="number_bathrooms">{{ place.number_bathrooms }} Bathroom{% if place.number_bathrooms != 1%}s{% endif %}</div>
+					</div>
+					<div class="description">
+						{{ place.description | safe }}
+					</div>
+					<div class="price_by_night">
+						<b>${{ place.price_by_night }}</b> night
+					</div>
+				</article>
+			</a>
 			{% endfor %}
 		</section>
 	</main>

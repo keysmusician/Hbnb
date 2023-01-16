@@ -2,7 +2,7 @@
 """
 Hbnb Frontend Flask Web Application.
 """
-from flask import Flask, render_template
+from flask import Flask, abort, render_template
 from models import storage_engine
 from models.amenity import Amenity
 from models.place import Place
@@ -27,6 +27,25 @@ def close_db(error):
     Closes the storage engine.
     """
     storage_engine.close()
+
+@app.errorhandler(404)
+def page_not_found(e):
+    """
+    404 page.
+    """
+    return render_template('404.html'), 404
+
+@app.route('/places/<place_id>', strict_slashes=False)
+def places(place_id):
+    """
+    Places pages.
+    """
+    place = storage_engine.get(Place, place_id)
+
+    if place is None:
+        abort(404)
+
+    return render_template('place.html', place=place)
 
 @app.route('/', strict_slashes=False)
 def hbnb():

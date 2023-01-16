@@ -33,12 +33,20 @@
     padding: .5em;
 }
 
+#places a {
+    overflow: auto;
+}
+
+#places a:visited {
+    color: none;
+}
+
 #places h2 {
     font-size: 25px;
     text-align: center;
 }
 
-.title_box {
+#places .title_box {
     border-bottom: 1px solid #DDDDDD;
     display: block;
     height: 100px;
@@ -71,7 +79,7 @@
     overflow-y: scroll;
 }
 
-.information div {
+#places .information div {
     align-items: center;
     display: flex;
     flex-direction: column;
@@ -79,17 +87,17 @@
     justify-content: flex-end;
 }
 
-.information .max_guest {
+#places .information .max_guest {
     background: url("../images/icon_group.png") no-repeat top center;
     width: 100px;
 }
 
-.information .number_rooms {
+#places .information .number_rooms {
     background: url("../images/icon_bed.png") no-repeat top center;
     width: 100px;
 }
 
-.information .number_bathrooms {
+#places .information .number_bathrooms {
     background: url("../images/icon_bath.png") no-repeat top center;
     width: 100px;
 }

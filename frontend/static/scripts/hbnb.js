@@ -1,7 +1,8 @@
-const selected_amenities = new Map();
-const selected_cities = new Map();
+import { API_root } from './api_root.js'
 
-const API_root = 'http://0.0.0.0:5002/api/v1/'
+const selected_amenities = new Map();
+
+const selected_cities = new Map();
 
 $(_ => {
   checkAPIStatus();
@@ -23,7 +24,7 @@ $(_ => {
 
   // Add click listener on search button
   $('button').on('click', _ => {
-    $('.places').empty();
+    $('#places').empty();
     const filters = {
       amenities: Array.from(selected_amenities.keys()),
       cities: Array.from(selected_cities.keys())
@@ -79,48 +80,31 @@ function selectCities () {
 
 function populatePlace (data) {
   data.forEach(place => {
-    // first div
-    const articleNode = document.createElement('ARTICLE');
-    let outerDiv = document.createElement('DIV');
-    const placeNameH2 = document.createElement('H2');
-    let innerDiv = document.createElement('DIV');
-    placeNameH2.appendChild(document.createTextNode(place.name));
-    innerDiv.appendChild(document.createTextNode('$' + place.price_by_night));
-    outerDiv.appendChild(placeNameH2);
-    outerDiv.appendChild(innerDiv);
-    articleNode.appendChild(outerDiv);
-    outerDiv.classList.add('title_box');
-    innerDiv.classList.add('price_by_night');
-    // Information div
-    // guests
-    outerDiv = document.createElement('DIV');
-    innerDiv = document.createElement('DIV');
-    innerDiv.classList.add('max_guest');
-    const guest = place.max_guest !== 1 ? 'Guests' : 'Guest';
-    innerDiv.appendChild(document.createTextNode(guest + ' ' + place.max_guest));
-    outerDiv.appendChild(innerDiv);
-    // rooms
-    innerDiv = document.createElement('DIV');
-    innerDiv.classList.add('number_rooms');
-    const room = place.max_guest !== 1 ? 'Rooms' : 'Room';
-    innerDiv.appendChild(document.createTextNode(room + ' ' + place.number_rooms));
-    outerDiv.appendChild(innerDiv);
-    // bathrooms
-    innerDiv = document.createElement('DIV');
-    innerDiv.classList.add('number_bathrooms');
-    const bathroom = place.max_guest !== 1 ? 'Bathrooms' : 'Bathroom';
-    innerDiv.appendChild(document.createTextNode(bathroom + ' ' + place.number_bathrooms));
-    outerDiv.appendChild(innerDiv);
+    const places_html = `
+      <a href="/places/${ place.id }">
+        <article>
+          <div class="title_box">
+            <h2>${ place.name }</h2>
+          </div>
+          <div class="city">
+            <b>${ place.city.name }, ${ place.state.name }</b>
+          </div>
+          <div class="information">
+            <div class="max_guest">${ place.max_guest } Guest${ place.max_guest != 1 ? 's' : '' }</div>
+            <div class="number_rooms">${ place.number_rooms } Bedroom${ place.number_rooms != 1 ? 's' : ''}</div>
+            <div class="number_bathrooms">${ place.number_bathrooms } Bathroom${ place.number_rooms != 1 ? 's' : ''}</div>
+          </div>
+          <div class="description">
+            ${ place.description }
+          </div>
+          <div class="price_by_night">
+            <b>\$${ place.price_by_night }</b> night
+          </div>
+        </article>
+      </a>
+      `
 
-    outerDiv.classList.add('information');
-    articleNode.appendChild(outerDiv);
-    // description div
-    outerDiv = document.createElement('DIV');
-    outerDiv.classList.add('description');
-    outerDiv.insertAdjacentHTML('beforeend', place.description);
-    articleNode.appendChild(outerDiv);
-
-    $('.places')[0].appendChild(articleNode);
+    $('#places').append(places_html);
   });
 }
 
