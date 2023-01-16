@@ -31,6 +31,6 @@ def number_objects():
     model_counts = {}
 
     for model in models:
-        model_counts[model.__name__.lower()] = storage_engine.count(model)
+        model_counts[model.__name__] = storage_engine.count(model)
 
     return jsonify(model_counts)

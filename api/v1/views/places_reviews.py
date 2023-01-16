@@ -47,7 +47,6 @@ def delete_review(review_id):
     """
     Deletes a Review object.
     """
-
     review = storage_engine.get(Review, review_id)
 
     if not review:

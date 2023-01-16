@@ -17,12 +17,7 @@ def get_amenities():
     """
     all_amenities = storage_engine.all(Amenity).values()
 
-    list_amenities = []
-
-    for amenity in all_amenities:
-        list_amenities.append(amenity.to_dict())
-
-    return jsonify(list_amenities)
+    return jsonify([amenity.to_dict() for amenity in all_amenities])
 
 
 @app_views.route(

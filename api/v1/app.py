@@ -22,14 +22,14 @@ cors = CORS(app, resources={r"/api/v1/*": {"origins": "*"}})
 @app.teardown_appcontext
 def close_db(error):
     """
-    Closes storage engine.
+    Closes the storage engine.
     """
     storage_engine.close()
 
 @app.errorhandler(404)
 def not_found(error):
     """
-    Forms the 404 error response.
+    Returns the 404 error response.
     """
     return make_response(jsonify({'error': "Not found"}), 404)
 
