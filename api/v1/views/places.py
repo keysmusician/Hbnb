@@ -143,14 +143,12 @@ def places_search():
 
         amenity_ids = data.get('amenities', None)
 
-    # If there were no filters applied, return all places
-    if (not data or not len(data) or (
-            not state_ids and
-            not city_ids and
-            not amenity_ids
-        )):
-        return jsonify(
-            [place.to_dict() for place in storage_engine.all(Place).values()])
+        city_ids = data.get('cities', None)
+
+        amenity_ids = data.get('amenities', None)
+    else:
+        abort(400, description=
+            "Missing filter(s) ('states', 'cities', 'amenities')")
 
     list_places = []
 
@@ -187,13 +185,33 @@ def places_search():
             all(amenity in place.amenities for amenity in amenities)
         ]
 
+    if not list_places:
+        list_places = [place for place in storage_engine.all(Place).values()]
+
     places = []
 
     for place in list_places:
         place_dict = place.to_dict()
 
-        place_dict.pop('amenities', None)
+        place_dict['amenities'] = [
+            amenity.to_dict() for amenity in place.amenities]
+
+        place_dict.pop('amenity_ids', None)
+
+        place_dict['city'] = place.city.to_dict()
+
+        place_dict.pop('city_id', None)
+
+        place_dict['state'] = place.city.state.to_dict()
+
+        place_dict.pop('state_id', None)
+
+        place_dict['user'] = place.user.to_dict()
+
+        place_dict.pop('user_id', None)
 
         places.append(place_dict)
+
+    print([place.values() for place in places])
 
     return jsonify(places)
