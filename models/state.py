@@ -2,13 +2,13 @@
 """
 Defines the `State` model.
 """
-from models import Base, STORAGE_TYPE
+from models import DeclarativeBase, STORAGE_TYPE
 from models.base_model import BaseModel
 from sqlalchemy import Column, String
 from sqlalchemy.orm import relationship
 
 
-class State(BaseModel, Base):
+class State(BaseModel, DeclarativeBase):
     """
     A US state.
     """

@@ -2,7 +2,7 @@
 """
 Defines the `Place` model.
 """
-from models import Base, STORAGE_TYPE
+from models import DeclarativeBase, STORAGE_TYPE
 from models.base_model import BaseModel
 from sqlalchemy import Column, String, Integer, Float, ForeignKey, Table
 from sqlalchemy.orm import relationship
@@ -11,7 +11,7 @@ from sqlalchemy.orm import relationship
 if STORAGE_TYPE == 'db':
     place_amenity = Table(
         'place_amenity',
-        Base.metadata,
+        DeclarativeBase.metadata,
         Column(
             'place_id',
             String(60),
@@ -27,7 +27,7 @@ if STORAGE_TYPE == 'db':
     )
 
 
-class Place(BaseModel, Base):
+class Place(BaseModel, DeclarativeBase):
     """
     A place to stay.
     """

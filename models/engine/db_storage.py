@@ -2,7 +2,7 @@
 """
 Defines the database storage engine.
 """
-from models import Base
+from models import DeclarativeBase
 from models.engine.storage_engine_base import StorageEngineBase
 from os import getenv
 from sqlalchemy import create_engine
@@ -33,7 +33,7 @@ class DBStorage(StorageEngineBase):
         )
 
         if HBNB_ENV == "test":
-            Base.metadata.drop_all(self.__engine)
+            DeclarativeBase.metadata.drop_all(self.__engine)
 
     def all(self, model=None):
         """
@@ -94,7 +94,7 @@ class DBStorage(StorageEngineBase):
         """
         Reloads data from the database.
         """
-        Base.metadata.create_all(self.__engine)
+        DeclarativeBase.metadata.create_all(self.__engine)
         session_factory = sessionmaker(
             bind=self.__engine, expire_on_commit=False)
         Session = scoped_session(session_factory)

@@ -2,13 +2,13 @@
 """
 Defines the `City` model.
 """
-from models import Base, STORAGE_TYPE
+from models import DeclarativeBase, STORAGE_TYPE
 from models.base_model import BaseModel
 from sqlalchemy import Column, String, ForeignKey
 from sqlalchemy.orm import relationship
 
 
-class City(BaseModel, Base):
+class City(BaseModel, DeclarativeBase):
     """
     A city.
     """

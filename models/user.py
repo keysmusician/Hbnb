@@ -3,13 +3,13 @@
 Defines the `User` model.
 """
 from hashlib import md5
-from models import Base, STORAGE_TYPE
+from models import DeclarativeBase, STORAGE_TYPE
 from models.base_model import BaseModel
 from sqlalchemy import Column, String
 from sqlalchemy.orm import relationship
 
 
-class User(BaseModel, Base):
+class User(BaseModel, DeclarativeBase):
     """
     A user.
     """
