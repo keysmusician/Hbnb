@@ -16,7 +16,7 @@
 	* [Technologies](#technologies)
 * [Installation](#installation)
 * [The Console](#the-console)
-	* [HBnB CLI — The command interpreter](#hbnb-cli--the-command-interpreter)
+	* [HBnB CLI — The command interpreter](#hbnb-cli)
 	* [Commands](#commands)
 	* [Usage](#usage)
 	* [Examples](#examples)
