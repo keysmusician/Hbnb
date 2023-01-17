@@ -16,7 +16,7 @@
 	* [Technologies](#technologies)
 * [Installation](#installation)
 * [The Console](#the-console)
-	* [HBnB CLI — The command interpreter](#hbnb-cli)
+	* [HBnB CLI](#hbnb-cli)
 	* [Commands](#commands)
 	* [Usage](#usage)
 	* [Examples](#examples)
@@ -95,7 +95,7 @@ The Console was the first stage of the project. In this stage, we wrote classes 
 
 ### Hbnb CLI
 The Hbnb CLI (command line interpreter) provides a convenient command line interface specifically to manage (add, delete, modify, etc.) Hbnb data.
-It offers an improved workflow over alternatives such as embedding data in the source code, manually managing a data file, or using the Python interpreter to manage the data.
+It offers an improved workflow over alternatives such as embedding data into source code, manually managing a data file, or using the Python interpreter to manage the data.
 
 ### Commands
 *Bracketed arguments are optional.*
