@@ -13,8 +13,7 @@ RUN pip install --requirement requirements.txt
 RUN apt-get -y update; apt-get -y upgrade; apt-get -y install nginx
 RUN ./config/setup_web_static.sh
 ENV HBNB_TYPE_STORAGE='file'
-# This should match [[services]] > internal_port in fly.toml and the Hbnb site
-# Nginx configuration:
+# This should match [[services]] > internal_port in fly.toml and the Hbnb site's Nginx configuration:
 EXPOSE 8080
 
 CMD nginx & \

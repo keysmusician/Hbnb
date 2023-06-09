@@ -77,6 +77,8 @@ class BaseModel:
     def to_dict(self, save_fs=None):
         """
         Returns a dictionary representation of the instance.
+
+        save_fs:
         """
         new_dict = self.__dict__.copy()
         if "created_at" in new_dict:

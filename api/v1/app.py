@@ -12,6 +12,7 @@ from os import environ
 
 app = Flask('Hbnb REST API')
 
+# TODO: update to app.json.compact
 app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
 
 app.register_blueprint(app_views)

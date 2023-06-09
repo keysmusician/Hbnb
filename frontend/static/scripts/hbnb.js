@@ -61,7 +61,7 @@ function selectAmenities () {
 }
 
 function selectCities () {
-  // Select all amenities checkboxes; Listen for checks
+  // Select all amenities' checkboxes; Listen for checks
   $('div.locations div.popover ul li input').change(function (event) {
     if (this.checked) {
       selected_cities.set(this.dataset.id, this.dataset.name);
@@ -80,6 +80,7 @@ function selectCities () {
 
 function populatePlace (data) {
   data.forEach(place => {
+
     const places_html = `
       <a href="/places/${ place.id }">
         <article>
@@ -87,7 +88,7 @@ function populatePlace (data) {
             <h2>${ place.name }</h2>
           </div>
           <div class="city">
-            <b>${ place.city.name }, ${ place.state.name }</b>
+            <b>${ place.city?.name }, ${ place.state?.name }</b>
           </div>
           <div class="information">
             <div class="max_guest">${ place.max_guest } Guest${ place.max_guest != 1 ? 's' : '' }</div>
