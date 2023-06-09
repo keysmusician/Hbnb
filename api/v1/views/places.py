@@ -5,6 +5,7 @@ Places, cities, and search routes.
 from api.v1.views import app_views
 from flasgger.utils import swag_from
 from flask import abort, jsonify, make_response, request
+from http import HTTPStatus
 from models import storage_engine
 from models.amenity import Amenity
 from models.city import City
@@ -23,7 +24,7 @@ def get_places(city_id):
     city = storage_engine.get(City, city_id)
 
     if not city:
-        abort(404)
+        abort(HTTPStatus.NOT_FOUND)
 
     return jsonify([place.to_dict() for place in city.places])
 
@@ -37,7 +38,7 @@ def get_place(place_id):
     place = storage_engine.get(Place, place_id)
 
     if not place:
-        abort(404)
+        abort(HTTPStatus.NOT_FOUND)
 
     return jsonify(place.to_dict())
 
@@ -52,13 +53,13 @@ def delete_place(place_id):
     place = storage_engine.get(Place, place_id)
 
     if not place:
-        abort(404)
+        abort(HTTPStatus.NOT_FOUND)
 
     storage_engine.delete(place)
 
     storage_engine.save()
 
-    return make_response(jsonify({}), 200)
+    return make_response(jsonify({}), HTTPStatus.OK)
 
 
 @app_views.route(
@@ -71,23 +72,23 @@ def post_place(city_id):
     city = storage_engine.get(City, city_id)
 
     if not city:
-        abort(404)
+        abort(HTTPStatus.NOT_FOUND)
 
     if not request.get_json():
-        abort(400, description="Not a JSON")
+        abort(HTTPStatus.BAD_REQUEST, description="Not a JSON")
 
     if 'user_id' not in request.get_json():
-        abort(400, description="Missing user_id")
+        abort(HTTPStatus.BAD_REQUEST, description="Missing user_id")
 
     data = request.get_json()
 
     user = storage_engine.get(User, data['user_id'])
 
     if not user:
-        abort(404)
+        abort(HTTPStatus.NOT_FOUND)
 
     if 'name' not in request.get_json():
-        abort(400, description="Missing name")
+        abort(HTTPStatus.BAD_REQUEST, description="Missing name")
 
     data["city_id"] = city_id
 
@@ -95,7 +96,7 @@ def post_place(city_id):
 
     instance.save()
 
-    return make_response(jsonify(instance.to_dict()), 201)
+    return make_response(jsonify(instance.to_dict()), HTTPStatus.CREATED)
 
 
 @app_views.route('/places/<place_id>', methods=['PUT'], strict_slashes=False)
@@ -107,12 +108,12 @@ def put_place(place_id):
     place = storage_engine.get(Place, place_id)
 
     if not place:
-        abort(404)
+        abort(HTTPStatus.NOT_FOUND)
 
     data = request.get_json()
 
     if not data:
-        abort(400, description="Not a JSON")
+        abort(HTTPStatus.BAD_REQUEST, description="Not a JSON")
 
     ignore = ['id', 'user_id', 'city_id', 'created_at', 'updated_at']
 
@@ -122,7 +123,7 @@ def put_place(place_id):
 
     storage_engine.save()
 
-    return make_response(jsonify(place.to_dict()), 200)
+    return make_response(jsonify(place.to_dict()), HTTPStatus.OK)
 
 
 @app_views.route('/places_search', methods=['POST'], strict_slashes=False)
@@ -131,23 +132,23 @@ def places_search():
     """
     Retrieves all Place objects matching the search query.
     """
-    if request.get_json() is None:
-        abort(400, description="Not a JSON")
+    search_query = request.get_json(silent=True)
 
-    data = request.get_json()
+    if search_query is None:
+        abort(HTTPStatus.BAD_REQUEST, 'Not a JSON')
+    elif type(search_query) != dict:
+        abort(HTTPStatus.UNPROCESSABLE_ENTITY)
 
-    if data and len(data):
-        state_ids = data.get('states', None)
+    filters = ['states', 'cities', 'amenities']
 
-        city_ids = data.get('cities', None)
+    if len(search_query):
+        state_ids = search_query.get('states', None)
 
-        amenity_ids = data.get('amenities', None)
+        city_ids = search_query.get('cities', None)
 
-        city_ids = data.get('cities', None)
-
-        amenity_ids = data.get('amenities', None)
+        amenity_ids = search_query.get('amenities', None)
     else:
-        abort(400, description=
+        abort(HTTPStatus.BAD_REQUEST, description=
             "Missing filter(s) ('states', 'cities', 'amenities')")
 
     list_places = []
@@ -211,7 +212,5 @@ def places_search():
         place_dict.pop('user_id', None)
 
         places.append(place_dict)
-
-    print([place.values() for place in places])
 
     return jsonify(places)

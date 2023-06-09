@@ -86,7 +86,6 @@ class Place(BaseModel, DeclarativeBase):
         city = relationship("City", back_populates="places")
         reviews = relationship(
             "Review", backref="place", cascade="all, delete, delete-orphan")
-
     else:
         city_id = ""
         user_id = ""

@@ -61,7 +61,7 @@ function selectAmenities () {
 }
 
 function selectCities () {
-  // Select all amenities checkboxes; Listen for checks
+  // Select all amenities' checkboxes; Listen for checks
   $('div.locations div.popover ul li input').change(function (event) {
     if (this.checked) {
       selected_cities.set(this.dataset.id, this.dataset.name);

@@ -35,7 +35,7 @@ class City(BaseModel, DeclarativeBase):
         @property
         def places(self):
             """
-            Lists all places in the city.
+            Lists all Places in the City.
             """
             from models.place import Place
 
