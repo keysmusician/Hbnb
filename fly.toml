@@ -13,7 +13,7 @@ processes = []
 
 [[services]]
   http_checks = []
-  # This MUST match port(s) in Hbnb's Nginx configuration:
+  # This MUST match the port(s) in Hbnb's Nginx configuration:
   internal_port = 8080
   processes = ["app"]
   protocol = "tcp"
