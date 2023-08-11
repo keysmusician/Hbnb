@@ -15,7 +15,4 @@ RUN ./config/setup_web_static.sh
 ENV HBNB_TYPE_STORAGE='file'
 # This should match [[services]] > internal_port in fly.toml and the Hbnb site's Nginx configuration:
 EXPOSE 8080
-
-CMD nginx & \
-    gunicorn --config config/hbnb_frontend_gunicorn.conf.py & \
-    gunicorn --config config/hbnb_api_gunicorn.conf.py
+CMD ./config/docker_entrypoint.sh
