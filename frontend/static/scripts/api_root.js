@@ -1,6 +1,9 @@
 /**
  * The API's root URL when in a development environment. It will be different
  * in development than in production. Set this to the API server's host and
- * port. Later I'll automate this.
+ * port. //TODO: Automate this.
  **/
-export const API_root = 'http://localhost:8000/api/'
+// Hosted via Docker:
+export const API_root = 'http://localhost:7996/api/'
+// Hosted via Flask development server:
+// export const API_root = 'http://localhost:5002/api/v1/'

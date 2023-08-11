@@ -1,3 +1,9 @@
+html {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+}
+
 a, a:hover, a:visited, a:active, a:link {
     color: inherit;
     text-decoration: none;
@@ -9,11 +15,13 @@ body {
     font-family: 'Montserrat', Circular, 'Helvetica Neue', Helvetica, Arial, sans-serif;
     margin: 0;
     padding: 0;
+    min-height: 100%;
 }
 
-body .container {
+body main .container {
     margin: 0;
     margin-bottom: 50px; /* Equal to the height of the footer */
+    min-height: 100%;
 }
 
 body > header,
@@ -22,7 +30,6 @@ body > main,
 body > footer {
     padding: 0px 80px;
 }
-
 
 @media only screen and (max-width: 1425px) {
     body > header,
