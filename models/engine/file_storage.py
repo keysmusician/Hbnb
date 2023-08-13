@@ -3,6 +3,7 @@
 Defines the file storage engine.
 """
 import json
+from pathlib import Path
 from models.engine.storage_engine_base import StorageEngineBase
 
 
@@ -16,8 +17,8 @@ class FileStorage(StorageEngineBase):
         deserialization.
     """
 
-    # Path to the JSON file
-    __file_path = "data/Hbnb_FileStorage.json"
+    # Path to the serialized JSON data file
+    __file_path = Path(__file__).parent.parent.parent / "data" / "Hbnb_FileStorage.json"
 
     # Stores all objects by <class name>.id
     __objects = {}
