@@ -5,14 +5,15 @@
     box-sizing: border-box;
     display: flex;
     flex-flow: row;
-    height: 70px;
+    height: 78px;
+    margin-top: 20px;
     position: sticky;
     top: 0px;
     width: 100%;
 }
 
-#filters button {
-    background: #ff385c;
+search_button {
+    background: var(--primary-color);
     border-radius: 40px;
     border-style: none;
     color: #FFFFFF;
@@ -23,7 +24,7 @@
     word-wrap: normal;
 }
 
-#filters button:hover {
+search_button:hover {
     background: #ff6a86;
 }
 

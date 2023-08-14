@@ -1,7 +1,7 @@
 header {
     align-items: center;
     background: white;
-    border-bottom: .5px solid #CCCCCC;
+    border-bottom: .5px solid #f0f0f0;
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
@@ -17,10 +17,16 @@ header #logo img{
     background-color: #cccccc;
     border-radius: 50%;
     height: 40px;
+    min-height: 40px;
     margin-left: auto;
     width: 40px;
+    min-width: 40px;
 }
 
 #api_status.available {
-    background-color: #ff545f;
+    background-color: var(--primary-color);
+}
+
+#search {
+    width: 100%;
 }

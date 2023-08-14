@@ -1,9 +1,10 @@
 import 'vite/modulepreload-polyfill'
+import React from 'react';
+import './styles.css';
 import { createRoot } from 'react-dom/client';
+import { FilterBar } from './categories';
+import { Search } from './search';
 
-// Clear the existing HTML content
-document.body.innerHTML = '<div id="app"></div>';
+createRoot(document.getElementById('filters')!).render(<FilterBar />);
 
-// Render your React component instead
-const root = createRoot(document.getElementById('app'));
-root.render(<h1>Hello, world</h1>);
+createRoot(document.getElementById('search')!).render(<Search />);

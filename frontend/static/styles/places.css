@@ -2,7 +2,7 @@
     display: grid;
     gap: 2em;
     grid-template-columns: repeat(4, 1fr);
-    padding-top: 2em;
+    padding-top: 1em;
     padding-bottom: 2em;
 }
 
@@ -27,7 +27,7 @@
 
 #places article {
     border-radius: 1em;
-    border: 1px solid #FF5A5F;
+    border: 1px solid var(--primary-color);
     min-height: 380px;
     overflow: auto;
     padding: .5em;

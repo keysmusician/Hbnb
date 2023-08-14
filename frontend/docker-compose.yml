@@ -1,7 +1,0 @@
-services:
-  hbnb:
-    build: .
-    ports:
-      - "8000:8080"
-    volumes:
-      [./frontend:/app/frontend]

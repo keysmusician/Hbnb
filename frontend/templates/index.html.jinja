@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<!-- Google Fonts -->
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+	<!-- GitHub icon -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<!-- jQuery -->
+	<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+	<!-- Styles -->
+	<link rel="stylesheet" type="text/css" href="../static/styles/common.css?{{ cache_id }}">
+	<link rel="stylesheet" type="text/css" href="../static/styles/header.css?{{ cache_id }}">
+	<link rel="stylesheet" type="text/css" href="../static/styles/footer.css?{{ cache_id }}">
+	<link rel="stylesheet" type="text/css" href="../static/styles/filters.css?{{ cache_id }}">
+	<link type="text/css" rel="stylesheet" href="../static/styles/places.css?{{ cache_id }}">
+	<link rel="icon" href="../static/images/icon.png?{{ cache_id }}" />
+	<script type="module" src="../static/scripts/hbnb.js?{{ cache_id }}"></script>
+	<script type="module">
+		import RefreshRuntime from 'http://localhost:5173/@react-refresh'
+		RefreshRuntime.injectIntoGlobalHook(window)
+		window.$RefreshReg$ = () => {}
+		window.$RefreshSig$ = () => (type) => type
+		window.__vite_plugin_react_preamble_installed__ = true
+	  </script>
+	<script type="module" src="http://localhost:5173/@vite/client"></script>
+	<script type="module" src="http://localhost:5173/source/index.tsx"></script>
+	<title>Hbnb</title>
+</head>
+
+<body>
+	<header>
+		<div id="logo">
+			<a href="/">
+				<img src="../static/images/logo.png?{{ cache_id }}"/>
+			</a>
+		</div>
+		<div id="search"> </div>
+		<div id="api_status" title="API status: unavailable"></div>
+	</header>
+	<section id="filters" title="Filters">
+		<div class="locations">
+			<div class="header">
+				<h3>Location</h3>
+				<h4>&nbsp;</h4>
+			</div>
+			<div class="popover">
+				<ul>
+					{% for state in states %}
+					<li>
+						<h2>{{ state[0].name }}:</h2>
+						<ul>
+							{% for city in state[1] %}
+							<li>
+								<input type="checkbox" data-id="{{ city.id }}" data-name="{{ city.name }}"/>
+								{{ city.name }}
+							</li>
+							{% endfor %}
+						</ul>
+					</li>
+					{% endfor %}
+				</ul>
+			</div>
+		</div>
+		<div class="amenities">
+			<div class="header">
+				<h3>Amenities</h3>
+				<h4>&nbsp;</h4>
+			</div>
+			<div class="popover">
+				<ul>
+					{% for amenity in amenities %}
+					<li>
+						<input type="checkbox" data-id="{{ amenity.id }}" data-name="{{ amenity.name }}"/>
+						{{ amenity.name }}
+					</li>
+					{% endfor %}
+				</ul>
+			</div>
+		</div>
+		<button type="button" title="Search">Search</button>
+	</section>
+	<main class="container">
+		<section id="places">
+			{% for place in places %}
+			<a href="/places/{{ place.id }}">
+				<article>
+					<div class="title_box">
+						<h2>{{ place.name }}</h2>
+					</div>
+					<div class="city">
+						<b>{{ place.city.name }}, {{ place.city.state.name }}</b>
+					</div>
+					<div class="information">
+						<div class="max_guest">{{ place.max_guest }} Guest{% if place.max_guest != 1 %}s{% endif %}</div>
+						<div class="number_rooms">{{ place.number_rooms }} Bedroom{% if place.number_rooms != 1 %}s{% endif %}</div>
+						<div class="number_bathrooms">{{ place.number_bathrooms }} Bathroom{% if place.number_bathrooms != 1%}s{% endif %}</div>
+					</div>
+					<div class="description">
+						{{ place.description | safe }}
+					</div>
+					<div class="price_by_night">
+						<b>${{ place.price_by_night }}</b> night
+					</div>
+				</article>
+			</a>
+			{% endfor %}
+		</section>
+	</main>
+
+	{% include 'footer.html.jinja' %}
+
+</body>
+
+</html>

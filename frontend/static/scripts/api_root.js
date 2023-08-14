@@ -4,6 +4,7 @@
  * port. //TODO: Automate this.
  **/
 // Hosted via Docker:
-export const API_root = 'http://localhost:7996/api/'
+export const API_root = 'http://localhost:8000/api/'
+
 // Hosted via Flask development server:
 // export const API_root = 'http://localhost:5002/api/v1/'

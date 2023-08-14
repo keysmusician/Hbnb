@@ -20,11 +20,13 @@ COPY models models
 
 # Sets up the web server for deployment
 RUN <<HEREDOC_END
+	export SITE_CONFIG_NAME=Hbnb.conf
 	# Add Hbnb site configuration to Nginx sites
-	mv config/Hbnb /etc/nginx/sites-available/Hbnb
+	mv config/"$SITE_CONFIG_NAME" /etc/nginx/sites-available/"$SITE_CONFIG_NAME"
 
 	# Enable Hbnb site
-	ln -sf /etc/nginx/sites-available/Hbnb /etc/nginx/sites-enabled/Hbnb
+	ln -sf /etc/nginx/sites-available/"$SITE_CONFIG_NAME" \
+		/etc/nginx/sites-enabled/"$SITE_CONFIG_NAME"
 
 	# Disable the default Nginx site
 	rm /etc/nginx/sites-enabled/default

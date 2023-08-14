@@ -33,7 +33,7 @@ def page_not_found(e):
     """
     404 page.
     """
-    return render_template('404.html'), 404
+    return render_template('404.html.jinja'), 404
 
 @app.route('/places/<place_id>', strict_slashes=False)
 def places(place_id):
@@ -45,7 +45,7 @@ def places(place_id):
     if place is None:
         abort(404)
 
-    return render_template('place.html', place=place)
+    return render_template('place.html.jinja', place=place)
 
 @app.route('/', strict_slashes=False)
 def hbnb():
@@ -65,11 +65,11 @@ def hbnb():
     places = sorted(storage_engine.all(Place).values(), key=sort_by_name)
 
     return render_template(
-        'hbnb.html',
+        'index.html.jinja',
         states=states_cities,
         amenities=amenities,
         places=places,
-        cache_id=uuid.uuid4()
+        cache_id=uuid.uuid4(),
     )
 
 
