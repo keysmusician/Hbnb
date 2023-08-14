@@ -40,4 +40,5 @@ ENV HBNB_TYPE_STORAGE='file'
 # This should match [[services]] > internal_port in fly.toml and the Hbnb site's Nginx configuration:
 EXPOSE 8080
 
-CMD ./config/docker_entrypoint.sh
+# Specifying Bash as the interpreter makes it clear what's wrong if the file accidentally contains CRLF
+CMD bash ./config/docker_entrypoint.sh
