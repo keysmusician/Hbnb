@@ -18,7 +18,8 @@ class FileStorage(StorageEngineBase):
     """
 
     # Path to the serialized JSON data file
-    __file_path = Path(__file__).parent.parent.parent / "data" / "Hbnb_FileStorage.json"
+    __file_path = Path(__file__).parent.parent.parent / \
+        "data" / "Hbnb_FileStorage.json"
 
     # Stores all objects by <class name>.id
     __objects = {}
@@ -48,7 +49,7 @@ class FileStorage(StorageEngineBase):
         Does nothing for this FileStorage engine, but this function exists to
         be compatible with the storage engine API.
         """
-        #self.save()
+        # self.save()
         pass
 
     def delete(self, object=None):
