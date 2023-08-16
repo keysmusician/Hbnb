@@ -1,6 +1,6 @@
 import 'vite/modulepreload-polyfill'
 import React from 'react';
-import './styles.css';
+import './categories.css';
 import { createRoot } from 'react-dom/client';
 import { FilterBar } from './categories';
 import { Search } from './search';

@@ -23,7 +23,7 @@ $(_ => {
   //$.post(ajaxSettings);
 
   // Add click listener on search button
-  $('button').on('click', _ => {
+  $('#static_search_button').on('click', _ => {
     $('#places').empty();
     const filters = {
       amenities: Array.from(selected_amenities.keys()),

@@ -22,11 +22,18 @@
 	align-items: center;
 	border: 1px solid var(--whisper-grey);
 	border-radius: 100px;
+	box-shadow: 0 3px 5px -2px var(--whisper-grey);
 	height: 100%;
 }
 
+@keyframes shadow_fade {
+	100% {
+		box-shadow: 0 3px 5px 0px var(--whisper-grey);
+	}
+}
+
 .search_buttons:hover {
-	box-shadow: 0 1px 3px var(--whisper-grey);
+	animation: shadow_fade 0.2s ease forwards;
 }
 
 .anywhere {
@@ -53,7 +60,10 @@
 
 .search_icon {
 	background-color: var(--primary-color);
-	width: 30px;
-	height: 30px;
 	border-radius: 50%;
+	display: grid;
+	grid-template-columns: 10px 10px 10px;
+	grid-template-rows: 10px 10px 10px;
+	height: 30px;
+	width: 30px;
 }
