@@ -84,7 +84,7 @@ export function FilterBar() {
                 "pointer" : "default"
             }}
             type="button"
-            onClick={(event) => categoriesRef.current?.scroll(-scrollAmount)}
+            onClick={() => categoriesRef.current?.scroll(-scrollAmount)}
           >
             <div
               className="scroll_button_arrow"
@@ -118,8 +118,32 @@ export function FilterBar() {
           </button>
         </div>
       </div>
-      <button className="filters_button" type="button">
-        <img />
+      <button
+        style={{
+          "alignItems": "center",
+          "backgroundColor": "white",
+          "borderRadius": "10px 10px 10px 10px",
+          "border": "1px solid var(--whisper-grey)",
+          "boxSizing": "border-box",
+          "display": "flex",
+          "flexDirection": "row",
+          "gap": "10px",
+          "gridColumn": "3",
+          "height": "60%",
+          "justifyContent": "center",
+          "padding": "10px",
+          "cursor": "pointer",
+        }}
+        type="button"
+        onClick={() => true}
+      >
+        <svg style={{
+          "display": "block",
+          "height": "14px",
+          "width": "14px",
+        }} viewBox="0 0 16 16">
+          <path d="M5 8a3 3 0 0 1 2.83 2H14v2H7.83A3 3 0 1 1 5 8zm0 2a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm6-8a3 3 0 1 1-2.83 4H2V4h6.17A3 3 0 0 1 11 2zm0 2a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"></path>
+        </svg>
         <div>Filters</div>
       </button>
     </article>
@@ -205,13 +229,31 @@ const Categories = forwardRef<CategoriesHandle, CategoriesProps>(
             (scrollEvent.target as HTMLFormElement).scrollLeft
           )
         }
+
       >
         {
           categories.map((category, index) => {
-            const selected = index === selectedIndex ? "category_selected" : ""
-
             return <li
-              className={`category ${selected}`}
+              className={`category`}
+              style={{
+                "borderBottom": "solid 2px transparent",
+                "color": "var(--unfocused-text-color)",
+                "paddingBottom": "12px",
+                "alignItems": "center",
+                "boxSizing": "border-box",
+                "display": "flex",
+                "flexDirection": "column",
+                "flexWrap": "nowrap",
+                "fontSize": "12px",
+                "height": "100%",
+                "justifyContent": "space-around",
+                ...(index === selectedIndex && {
+                  "color": "var(--focused-text-color)",
+                  "borderBottom": "solid 2px black"
+                }
+                )
+              }}
+              title={category}
               key={index}
               onClick={() => setSelectedIndex(index)}
               onMouseDown={_ => scale(_.currentTarget!, 0.95)}
@@ -226,7 +268,12 @@ const Categories = forwardRef<CategoriesHandle, CategoriesProps>(
                   'justifyContent': 'inherit',
                 }}
               >
-                <span className="category_icon">[Img]</span>
+                <span style={{
+                  "height": "40px",
+                  "margin": "5px",
+                  "textAlign": "center",
+                  "width": "40px"
+                }}>[Img]</span>
                 <span>{category}</span>
               </div>
             </li>
