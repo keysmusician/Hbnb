@@ -46,18 +46,6 @@ export function FilterBar() {
 
   const scrollAmount = 500
 
-  const scroll_button_arrow_style = {
-    "transform": "rotate(45deg)",
-    "margin": "1px",
-    "minWidth": "7.5px",
-    "minHeight": "7.5px",
-    "borderBottom": "2px solid black",
-    "borderLeft": "2px solid black",
-    "backgroundColor": "transparent",
-    "borderRadius": "0 1.5px",
-    "boxSizing": "border-box",
-  }
-
   const scrollListener = () =>
     document.getElementsByTagName("html")[0].scrollTop > 0 ?
       setBoxShadowVisible(true) :
@@ -93,30 +81,11 @@ export function FilterBar() {
           }
                     `}
         >
-          <button
-            className="scroll_button"
+          <ScrollCategoriesButton
             disabled={!scrollPreviousVisible}
-            style={{
-              "cursor": scrollPreviousVisible ?
-                "pointer" : "default"
-            }}
-            type="button"
             onClick={() => categoriesRef.current?.scroll(-scrollAmount)}
-          >
-            <div style={{
-              display: "flex",
-              alignItems: "center",
-              boxSizing: "border-box",
-              height: "100%",
-              maxWidth: "7px",
-              overflow: "hidden",
-            }}>
-              <div
-                className="scroll_button_arrow"
-                style={scroll_button_arrow_style}
-              />
-            </div>
-          </button>
+            arrowDirection="left"
+          />
         </div>
         <Categories
           ref={categoriesRef}
@@ -130,18 +99,11 @@ export function FilterBar() {
             ${scrollNextVisible ? "scroll_button_container_visible" : ""}
           `}
         >
-          <button
-            className="scroll_button"
+          <ScrollCategoriesButton
             disabled={!scrollNextVisible}
-            style={{ "cursor": scrollNextVisible ? "pointer" : "default" }}
-            type="button"
             onClick={() => categoriesRef.current?.scroll(scrollAmount)}
-          >
-            <div className="scroll_button_arrow" style={{
-              ...scroll_button_arrow_style,
-              "transform": "rotate(-135deg)"
-            }} />
-          </button>
+            arrowDirection="right"
+          />
         </div>
       </div>
       <button
@@ -376,3 +338,48 @@ const Categories = forwardRef<CategoriesHandle, CategoriesProps>(
       </form>
     )
   })
+
+
+interface ScrollCategoriesButtonProps {
+  disabled: boolean
+  onClick: () => void
+  arrowDirection: "left" | "right"
+}
+function ScrollCategoriesButton({ disabled, onClick, arrowDirection }: ScrollCategoriesButtonProps) {
+
+  const degrees = arrowDirection === "left" ? 45 : 135
+
+  return <button
+    className="scroll_button"
+    disabled={disabled}
+    style={{
+      "cursor": disabled ? "default" : "pointer",
+    }}
+    type="button"
+    onClick={onClick}
+  >
+    <div style={{
+      display: "flex",
+      alignItems: "center",
+      boxSizing: "border-box",
+      height: "100%",
+      maxWidth: "7px",
+      overflow: "hidden",
+      transform: arrowDirection == "right" && "rotate(180deg)",
+    }}>
+      <div
+        className="scroll_button_arrow"
+        style={{
+          "transform": `rotate(45deg)`,
+          "margin": "1px",
+          "minWidth": "7.5px",
+          "minHeight": "7.5px",
+          "borderBottom": "2px solid black",
+          "borderLeft": "2px solid black",
+          "backgroundColor": "transparent",
+          "borderRadius": "0 1.5px",
+          "boxSizing": "border-box",
+        }} />
+    </div>
+  </button>
+}
