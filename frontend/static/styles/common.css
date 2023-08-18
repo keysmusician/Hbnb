@@ -1,4 +1,19 @@
-a, a:hover, a:visited, a:active, a:link {
+:root {
+    --primary-color: #ff545f
+}
+
+html {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    overflow-y: scroll;
+}
+
+a,
+a:hover,
+a:visited,
+a:active,
+a:link {
     color: inherit;
     text-decoration: none;
 }
@@ -9,26 +24,29 @@ body {
     font-family: 'Montserrat', Circular, 'Helvetica Neue', Helvetica, Arial, sans-serif;
     margin: 0;
     padding: 0;
+    min-height: 100%;
 }
 
-body .container {
+body main .container {
     margin: 0;
-    margin-bottom: 50px; /* Equal to the height of the footer */
+    margin-bottom: 50px;
+    /* Equal to the height of the footer */
+    min-height: 100%;
 }
 
-body > header,
-#filters,
-body > main,
-body > footer {
+body>header,
+#places,
+#filters>article,
+body>footer {
     padding: 0px 80px;
 }
 
-
 @media only screen and (max-width: 1425px) {
-    body > header,
-    #filters,
-    body > main,
-    body > footer {
+
+    body>header,
+    #places,
+    #filters>article,
+    body>footer {
         padding: 0px 40px;
     }
 }

@@ -1,0 +1,124 @@
+:root {
+	--medium-grey: rgb(168, 168, 168);
+	--whisper-grey: rgb(221, 221, 221);
+
+	--scroll-button-fade-duration: 0.3s;
+}
+
+:root:first-child {
+	--focused-text-color: black;
+	--unfocused-text-color: var(--medium-grey);
+}
+
+.categories {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: nowrap;
+	gap: 30px;
+	height: 100%;
+	justify-content: space-between;
+	margin: 0px;
+	overflow-x: auto;
+	padding: 0px;
+	scrollbar-width: none;
+	white-space: nowrap;
+	width: 100%;
+}
+
+/* .category:active  .scale_down_animation_container {
+	animation: scale_down 0.3s ease forwards;
+} */
+
+/* @keyframes color_fade {
+	100% {
+		color: var(--focused-text-color);
+		border-bottom: solid 2px var(--unfocused-text-color);
+	}
+
+} */
+
+/* .category:hover {
+	animation: color_fade 0.15s ease forwards;
+} */
+
+.category_selected:hover {
+	border-bottom: solid 2px black;
+	animation: none;
+}
+
+.scroll_button {
+	align-items: center;
+	border: .5px solid var(--unfocused-text-color);
+	background-color: white;
+	border-radius: 50%;
+	display: flex;
+	justify-content: center;
+	height: 28px;
+	padding: 2px;
+	text-align: end;
+	width: 28px;
+}
+
+.scroll_button:hover {
+	box-shadow: 0 6px 12px -3px var(--unfocused-text-color);
+	height: 28px;
+	padding: 2px;
+	width: 28px;
+}
+
+@keyframes fade_in {
+	0% {
+		opacity: 0;
+	}
+
+	100% {
+		opacity: 1;
+	}
+}
+
+@keyframes fade_out {
+	0% {
+		opacity: 1;
+	}
+
+	100% {
+		opacity: 0;
+	}
+}
+
+.scroll_button_container {
+	animation: fade_out var(--scroll-button-fade-duration) ease forwards;
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+	justify-content: center;
+	pointer-events: none;
+	position: absolute;
+	top: 0px;
+	width: 5%;
+}
+
+.scroll_button_container_visible {
+	animation: fade_in var(--scroll-button-fade-duration) ease forwards;
+}
+
+.scroll_button_container button {
+	pointer-events: initial;
+}
+
+.scroll_previous {
+	background-image: linear-gradient(to left, rgb(255 255 255/0), white 50%);
+	left: 0px;
+}
+
+.scroll_next {
+	align-items: end;
+	background-image: linear-gradient(to right, rgb(255 255 255/0), white 50%);
+	right: 0px;
+}
+
+.filters_button .filters_button img {
+	height: 10px;
+	margin: 0px 5px;
+	width: 10px;
+}

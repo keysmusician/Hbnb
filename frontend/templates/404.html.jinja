@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<!-- Google Fonts -->
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+	<!-- GitHub icon -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<!-- jQuery -->
+	<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+	<!-- Styles -->
+	<link rel="stylesheet" type="text/css" href="../static/styles/common.css?{{ cache_id }}">
+	<link rel="stylesheet" type="text/css" href="../static/styles/header.css?{{ cache_id }}">
+	<link rel="stylesheet" type="text/css" href="../static/styles/footer.css?{{ cache_id }}">
+	<link rel="icon" href="../static/images/icon.png?{{ cache_id }}" />
+	<script type="module" src="../static/scripts/hbnb.js?{{ cache_id }}"></script>
+	<title>Hbnb</title>
+</head>
+
+<body>
+	<header>
+		<div id="logo">
+			<a href="/">
+				<img src="../static/images/logo.png?{{ cache_id }}"/>
+			</a>
+		</div>
+		<div id="api_status" title="API status: unavailable"></div>
+	</header>
+
+	<main class="container">
+		<section>
+			<h1>
+				We can’t seem to find the page you’re looking for
+			</h1>
+		</section>
+	</main>
+
+	{% include 'footer.html.jinja' %}
+
+</body>
+
+</html>

@@ -4,6 +4,8 @@ const selected_amenities = new Map();
 
 const selected_cities = new Map();
 
+const selected_category = ""
+
 $(_ => {
   checkAPIStatus();
   selectAmenities();
@@ -23,15 +25,18 @@ $(_ => {
   //$.post(ajaxSettings);
 
   // Add click listener on search button
-  $('button').on('click', _ => {
-    $('#places').empty();
-    const filters = {
-      amenities: Array.from(selected_amenities.keys()),
-      cities: Array.from(selected_cities.keys())
-    };
-    searchPlaces(filters, populatePlace);
-  });
+  $('#static_search_button').on('click', _ => renderSearch(selected_category));
 });
+
+export function renderSearch(selected_category) {
+  $('#places').empty();
+  const filters = {
+    amenities: Array.from(selected_amenities.keys()),
+    cities: Array.from(selected_cities.keys()),
+    category: selected_category
+  };
+  searchPlaces(filters, populatePlace);
+}
 
 function checkAPIStatus () {
   $.get(API_root + 'status/', function (response) {
