@@ -4,8 +4,8 @@ Defines the `Place` model.
 """
 from models import DeclarativeBase, STORAGE_TYPE
 from models.base_model import BaseModel
-from sqlalchemy import Column, String, Integer, Float, ForeignKey, Table
-from sqlalchemy.orm import relationship
+from sqlalchemy import Column, String, ForeignKey, Table
+from random import choice
 
 
 if STORAGE_TYPE == 'db':
@@ -37,6 +37,7 @@ class Place(BaseModel, DeclarativeBase):
             *args,
             city_id,
             user_id,
+            category_id=None,
             description,
             number_rooms,
             number_bathrooms,
@@ -45,20 +46,29 @@ class Place(BaseModel, DeclarativeBase):
             latitude,
             longitude,
             **kwargs
-            ):
+    ):
         """
         Initializes a Place.
         """
-        for property in ('reviews', 'amenities', 'user'):
+        for property in ('reviews', 'amenities', 'user', 'city', 'category'):
             try:
                 kwargs.pop(property)
             except KeyError:
                 pass
 
+        # Temporary solution: randomly assign a category if none is provided.
+        if category_id is None:
+            from models.category import Category
+            category_id = choice([
+                category.id for category in
+                self.storage_engine.all(Category).values()
+            ])
+
         super().__init__(
             *args,
             city_id=city_id,
             user_id=user_id,
+            category_id=category_id,
             description=description,
             number_rooms=number_rooms,
             number_bathrooms=number_bathrooms,
@@ -73,6 +83,8 @@ class Place(BaseModel, DeclarativeBase):
         __tablename__ = 'places'
         city_id = Column(String(60), ForeignKey('cities.id'), nullable=False)
         user_id = Column(String(60), ForeignKey('users.id'), nullable=False)
+        category_id = Column(String(60), ForeignKey(
+            'categories.id'), nullable=True)
         name = Column(String(128), nullable=False)
         description = Column(String(1024), nullable=True)
         number_rooms = Column(Integer, nullable=False, default=0)
@@ -89,6 +101,7 @@ class Place(BaseModel, DeclarativeBase):
     else:
         city_id = ""
         user_id = ""
+        category_id = ""
         name = ""
         description = ""
         number_rooms = 0
@@ -110,6 +123,15 @@ class Place(BaseModel, DeclarativeBase):
                 self.storage_engine.get(Amenity, amenity_id)
                 for amenity_id in self.amenity_ids
             ]
+
+        @property
+        def category(self):
+            """
+            The Category the Place is in.
+            """
+            from models.category import Category
+
+            return self.storage_engine.get(Category, self.category_id)
 
         @property
         def city(self):

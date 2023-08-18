@@ -1,3 +1,7 @@
-- Compose and inherit Jinja templates
+- Make categories accessibly navigable
 
-Make categories accessibly navigable
+- Filters Modal
+
+- Search component
+
+- Fix scale animation target

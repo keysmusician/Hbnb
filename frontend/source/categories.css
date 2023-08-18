@@ -29,17 +29,17 @@
 	animation: scale_down 0.3s ease forwards;
 } */
 
-@keyframes color_fade {
+/* @keyframes color_fade {
 	100% {
 		color: var(--focused-text-color);
 		border-bottom: solid 2px var(--unfocused-text-color);
 	}
 
-}
+} */
 
-.category:hover {
+/* .category:hover {
 	animation: color_fade 0.15s ease forwards;
-}
+} */
 
 .category_selected:hover {
 	border-bottom: solid 2px black;
@@ -48,15 +48,15 @@
 
 .scroll_button {
 	align-items: center;
-	border: 1px solid var(--unfocused-text-color);
+	border: .5px solid var(--unfocused-text-color);
 	background-color: white;
 	border-radius: 50%;
 	display: flex;
 	justify-content: center;
-	height: 27px;
+	height: 28px;
 	padding: 2px;
 	text-align: end;
-	width: 27px;
+	width: 28px;
 }
 
 .scroll_button:hover {

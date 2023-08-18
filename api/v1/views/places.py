@@ -3,11 +3,13 @@
 Places, cities, and search routes.
 """
 from api.v1.views import app_views
+from enum import Enum
 from flasgger.utils import swag_from
 from flask import abort, jsonify, make_response, request
 from http import HTTPStatus
 from models import storage_engine
 from models.amenity import Amenity
+from models.category import Category
 from models.city import City
 from models.place import Place
 from models.state import State
@@ -132,27 +134,31 @@ def places_search():
     """
     Retrieves all Place objects matching the search query.
     """
+    class Filter(Enum):
+        states = 'states'
+        cities = 'cities'
+        amenities = 'amenities'
+        category = 'category'
+
     search_query = request.get_json(silent=True)
 
     if search_query is None:
         abort(HTTPStatus.BAD_REQUEST, 'Not a JSON')
     elif type(search_query) != dict:
         abort(HTTPStatus.UNPROCESSABLE_ENTITY)
+    elif not len(search_query):
+        abort(
+            HTTPStatus.BAD_REQUEST,
+            description="Missing filters. Request must contain at least one of "
+            f"the filter keys: {[filter.value for filter in Filter]}"
+        )
 
-    filters = ['states', 'cities', 'amenities']
+    state_ids, city_ids, amenity_ids, category_id = (
+        search_query.get(filter.value, None) for filter in Filter)
 
-    if len(search_query):
-        state_ids = search_query.get('states', None)
+    list_places = []  # TODO: use a set instead
 
-        city_ids = search_query.get('cities', None)
-
-        amenity_ids = search_query.get('amenities', None)
-    else:
-        abort(HTTPStatus.BAD_REQUEST, description=
-            "Missing filter(s) ('states', 'cities', 'amenities')")
-
-    list_places = []
-
+    # TODO: Compare id's instead of instances. No need to hit the database.
     if state_ids:
         states = [
             storage_engine.get(State, state_id) for state_id in state_ids]
@@ -174,7 +180,7 @@ def places_search():
 
     if amenity_ids:
         if not list_places:
-            list_places = storage_engine.all(Place).values()
+            list_places = list(storage_engine.all(Place).values())
 
         amenities = [
             storage_engine.get(Amenity, amenity_id)
@@ -186,8 +192,16 @@ def places_search():
             all(amenity in place.amenities for amenity in amenities)
         ]
 
+    if category_id:
+        if not list_places:
+            list_places = list(storage_engine.all(Place).values())
+
+        list_places = [
+            place for place in list_places if place.category_id == category_id
+        ]
+
     if not list_places:
-        list_places = [place for place in storage_engine.all(Place).values()]
+        list_places = list(storage_engine.all(Place).values())
 
     places = []
 
@@ -198,6 +212,10 @@ def places_search():
             amenity.to_dict() for amenity in place.amenities]
 
         place_dict.pop('amenity_ids', None)
+
+        place_dict['category'] = place.category.to_dict()
+
+        place_dict.pop('category_id', None)
 
         place_dict['city'] = place.city.to_dict()
 
@@ -213,4 +231,4 @@ def places_search():
 
         places.append(place_dict)
 
-    return jsonify(places)
+    return places

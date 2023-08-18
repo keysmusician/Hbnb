@@ -1,14 +1,13 @@
 #filters {
     align-items: center;
     background: white;
-    box-shadow: rgba(134, 142, 149, 0.2) 0px 4px 4px -2px;
     box-sizing: border-box;
     display: flex;
     flex-flow: row;
     height: 78px;
     margin-top: 20px;
     position: sticky;
-    top: 0px;
+    top: 80px;
     width: 100%;
 }
 

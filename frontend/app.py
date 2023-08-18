@@ -21,6 +21,7 @@ app.root_path = Path(__file__).parent.resolve()
 # app.jinja_env.trim_blocks = True
 # app.jinja_env.lstrip_blocks = True
 
+
 @app.teardown_appcontext
 def close_db(error):
     """
@@ -28,12 +29,14 @@ def close_db(error):
     """
     storage_engine.close()
 
+
 @app.errorhandler(404)
 def page_not_found(e):
     """
     404 page.
     """
     return render_template('404.html.jinja'), 404
+
 
 @app.route('/places/<place_id>', strict_slashes=False)
 def places(place_id):
@@ -47,12 +50,13 @@ def places(place_id):
 
     return render_template('place.html.jinja', place=place)
 
+
 @app.route('/', strict_slashes=False)
 def hbnb():
     """
     Hbnb home page.
     """
-    sort_by_name = lambda item: item.name
+    def sort_by_name(item): return item.name
 
     states = sorted(storage_engine.all(State).values(), key=sort_by_name)
 
