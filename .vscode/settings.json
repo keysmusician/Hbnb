@@ -4,5 +4,9 @@
     ],
     "cSpell.ignoreWords": [
         "Xalapa"
-    ]
+    ],
+    "autopep8.args": [
+        "--ignore",
+        "E402"
+    ],
 }
