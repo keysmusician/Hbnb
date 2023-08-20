@@ -5,7 +5,15 @@ export namespace colors {
 	export const AirBnb_red = "rgb(255, 56, 92)"
 	export const AirBnb_grey = 'rgb(113, 113, 113)'
 	export const AirBnb_grey_2 = 'rgb(235, 235, 235)'
+}
 
+export namespace typography {
+	export const fontFamily = "Roboto, sans-serif"
+	export const fontSize = 16
+	export const fontWeight = 400
+	export const letterSpacing = 0
+	export const lineHeight = 1.5
+	export const textTransform = "none"
 }
 
 const _colors = colors
@@ -68,10 +76,18 @@ export namespace theme {
 		export const boxShadowVertical = 2
 	}
 	export namespace transition {
-		export const transitionDuration = "0.15s"
+		export const transitionDuration = 0.15
 		export const transitionTimingFunction = "ease-in-out"
-		export const transitionDelay = "0"
+		export const transitionDelay = 0
 		export const transitionProperty = "all"
+		export const create = ({
+			duration = transitionDuration,
+			timingFunction = transitionTimingFunction,
+			delay = transitionDelay,
+			property = transitionProperty,
+		} = {}) =>
+			`${property} ${duration}s ${timingFunction} ${delay}s`
+
 	}
 
 	// Suggested by CoPilot:

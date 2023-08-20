@@ -1,4 +1,3 @@
-import { keyframes } from '@emotion/react';
 import { theme } from './theme';
 
 
@@ -19,59 +18,60 @@ namespace styles {
   }
 }
 
-namespace animations {
-  export const shadow_fade = keyframes({
-    to: {
-      boxShadow: "0 3px 5px 0px var(--whisper-grey)",
-    }
-  })
+interface SearchProps {
+  setFilters: (filters: any) => void;
 }
-
-export function Search() {
+export function Search({ setFilters }: SearchProps) {
   return (
-    <div style={{
-      "alignItems": "center",
-      "display": "flex",
-      "justifyContent": "center",
-      "width": "100%",
-      "maxWidth": "100%"
-    }}>
-      <article className='search_buttons' css={{
-        "display": "flex",
+    <div
+      css={{
         "alignItems": "center",
-        "border": theme.border.create(),
-        "borderRadius": theme.border.radiusPrimary,
-        "boxShadow": "0 3px 5px -2px var(--whisper-grey)",
-        "height": "100%",
-        "cursor": "pointer",
-        "pointerEvents": "auto",
-        ":hover": {
-          "animation": `${animations.shadow_fade} 0.2s ease forwards;`,
-        }
-      }
-      } >
+        "display": "flex",
+        "justifyContent": "center",
+        "width": "100%",
+        "maxWidth": "100%"
+      }}
+
+      onClick={(mouseEvent) => {
+        const target = mouseEvent.currentTarget as HTMLElement;
+        console.log(target.parentElement)
+      }}
+    >
+      <article className='search_buttons'
+        css={{
+          display: "flex",
+          alignItems: "center",
+          border: theme.border.create(),
+          borderRadius: theme.border.radiusPrimary,
+          boxShadow: `0 3px 5px -2px ${theme.colors.border}`,
+          height: "100%",
+          cursor: "pointer",
+          pointerEvents: "auto",
+          transition: theme.transition.create({ property: "box-shadow" }),
+          ":hover": {
+            boxShadow: `0 3px 5px 0px ${theme.colors.border}`,
+          }
+        }} >
         <button
           className='anywhere'
-          css={
-            {
-              ...styles.searchBarButton,
-              "borderRadius": "100px 0 0 100px"
-            }
-
-          }>
-          <div style={styles.searchBarButtonDiv}>
+          css={{
+            ...styles.searchBarButton,
+            "borderRadius":
+              `${theme.border.radiusPrimary} 0 0 ${theme.border.radiusPrimary}`,
+          }}
+        >
+          <div css={styles.searchBarButtonDiv}>
             Anywhere
           </div>
         </button>
         <button
           css={{
             ...styles.searchBarButton,
-            "borderWidth": "0 1px",
-            "borderStyle": "solid",
-            "borderColor": "var(--whisper-grey)",
+            borderLeft: theme.border.create(),
+            borderRight: theme.border.create(),
           }}
         >
-          <div style={styles.searchBarButtonDiv}>
+          <div css={styles.searchBarButtonDiv}>
             Any week
           </div>
         </button>
@@ -82,57 +82,69 @@ export function Search() {
             "display": "flex",
             "alignItems": "center",
             "justifyContent": "center",
-            "color": "var(--unfocused-grey)",
-            "borderRadius": "0 100px 100px 0",
+            "color": theme.colors.tertiary,
+            "borderRadius":
+              `0 ${theme.border.radiusPrimary} ${theme.border.radiusPrimary} 0`,
           }}
         >
-          <div style={styles.searchBarButtonDiv}>
+          <div css={styles.searchBarButtonDiv}>
             Add guests
           </div>
-          <SearchIconButton />
+          <SearchIconButton onClick={() => setFilters((filters) => filters)} />
         </button>
       </article>
     </div >
   )
 }
 
-function SearchIconButton() {
+interface SearchIconButtonProps {
+  onClick: () => void;
+}
+function SearchIconButton({ onClick }: SearchIconButtonProps) {
   const magnifyingGlassWidth = "2px";
+
   return (
-    <span style={{
-      "backgroundColor": "var(--primary-color)",
-      "borderRadius": "50%",
-      "display": "grid",
-      "gridTemplateColumns": "10px 10px 10px",
-      "gridTemplateRows": "10px 10px 10px",
-      "height": "30px",
-      "width": "30px",
-    }}>
+    <span
+      css={{
+        "backgroundColor": theme.colors.primary,
+        "borderRadius": theme.border.radiusPrimary,
+        "display": "grid",
+        "gridTemplateColumns": "10px 10px 10px",
+        "gridTemplateRows": "10px 10px 10px",
+        "height": "30px",
+        "width": "30px",
+      }}
+      onClick={onClick}
+    >
       <span
-        style={{
+        css={{
           "position": "relative",
           "gridArea": "2 / 2 / 2 / 2",
         }}
       >
-        <span style={{
-          "border": `${magnifyingGlassWidth} solid white`,
-          "borderRadius": "50%",
-          "boxSizing": "border-box",
-          "display": "block",
-          "height": "80%",
-          "width": "80%",
-        }} />
-        <span style={{
-          "borderRight": `${magnifyingGlassWidth} solid white`,
-          "bottom": "0",
-          "boxSizing": "border-box",
-          "display": "block",
-          "height": "50%",
-          "position": "absolute",
-          "right": "0",
-          "transform": "rotate(-42deg)",
-          "transformOrigin": "bottom right",
-        }} />
+        <span
+          css={{
+            "border": `${magnifyingGlassWidth} solid white`,
+            "borderRadius": "50%",
+            "boxSizing": "border-box",
+            "display": "block",
+            "height": "80%",
+            "width": "80%",
+          }}
+        />
+        <span
+          css={{
+            "borderRight": `${magnifyingGlassWidth} solid white`,
+            "bottom": "0",
+            "boxSizing": "border-box",
+            "display": "block",
+            "height": "50%",
+            "position": "absolute",
+            "right": "0",
+            "transform": "rotate(-42deg)",
+            "transformOrigin": "bottom right",
+          }}
+        />
       </span>
     </span>
   )

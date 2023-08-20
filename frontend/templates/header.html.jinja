@@ -1,9 +1,15 @@
 <header>
 	<div id="logo">
 		<a href="/">
-			<img src="../static/images/logo.png?{{ cache_id }}"/>
+			<img src="../static/images/logo.png?{{ cache_id }}" />
 		</a>
 	</div>
 	<div id="search"> </div>
-	<div id="api_status" title="API status: unavailable"></div>
+	<a href="/api/status">
+		<div id="api_status_container">
+			<div id="api_status" title="API status: unavailable">
+				<div class="api_center">API</div>
+			</div>
+		</div>
+	</a>
 </header>

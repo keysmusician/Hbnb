@@ -43,8 +43,9 @@ export function renderSearch(selected_category) {
 function checkAPIStatus () {
   $.get(API_root + 'status/', function (response) {
     if (response.status === 'OK') {
-      $('DIV#api_status').addClass('available');
-      $('DIV#api_status').prop('title', 'API status: available');
+      $('DIV#api_status')
+        .addClass('available')
+        .prop('title', 'API status: available');
     }
   });
 }

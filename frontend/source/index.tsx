@@ -36,7 +36,9 @@ function setShowDialog(showDialog: boolean) {
 	filter_dialog_root.render(<FilterDialog showDialog={showDialog} setFilters={setFilters} />);
 }
 
-createRoot(document.getElementById('search')!).render(<Search />);
+createRoot(document.getElementById('search')!).render(
+	<Search setFilters={setFilters} />
+);
 
 createRoot(document.getElementById('filters')!).render(
 	<FilterBar setShowDialog={setShowDialog} setFilters={setFilters} />

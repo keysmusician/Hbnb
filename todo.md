@@ -21,3 +21,7 @@
   - Enter should submit
 
 - Search component
+
+- Animate API indicator, anchor/link it to API
+
+- Responsive layouts
