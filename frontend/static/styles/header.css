@@ -1,16 +1,12 @@
 header {
     background: white;
     align-items: center;
-    border-bottom: .5px solid #f0f0f0;
+    border-bottom: 1px solid #f0f0f0;
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
     height: 80px;
     position: sticky;
-    z-index: 1;
-}
-
-header:first-child {
     top: 0px;
 }
 

@@ -1,40 +1,21 @@
 import { forwardRef, useEffect, useImperativeHandle } from "react"
 import React from "react"
 import { API_root } from "../static/scripts/api_root.js"
-import { renderSearch } from "../static/scripts/hbnb.js"
-import { keyframes } from "@emotion/react"
+import { useWindowSize } from "./library.js"
+import { theme, icons, colors } from "./theme.js"
+import { Filters } from "./index.js"
 
 
 namespace api {
   export const categories = fetch(API_root + "/categories")
 }
 
-namespace animations {
 
-  const border_style = "solid 2px"
-
-  const fade_in_end_properties = {
-    "color": "var(--focused-text-color)",
-    "borderBottom": `${border_style} var(--unfocused-text-color)`,
-  }
-
-  export const fade_color_in = keyframes(
-    { "to": fade_in_end_properties, }
-  )
-
-  export const fade_color_out = keyframes(
-    {
-      "from": fade_in_end_properties,
-      "to":
-      {
-        "color": "var(--unfocused-text-color)",
-        "borderBottom": `${border_style} transparent`,
-      }
-    }
-  )
+interface FilterBarProps {
+  setShowDialog: React.Dispatch<React.SetStateAction<boolean>>
+  setFilters: (update: (filters: Filters) => Filters) => void
 }
-
-export function FilterBar() {
+export function FilterBar({ setShowDialog, setFilters }: FilterBarProps) {
 
   const [scrollPreviousVisible, setScrollPreviousVisible] = React.useState(false)
 
@@ -56,29 +37,33 @@ export function FilterBar() {
   window.addEventListener("scroll", scrollListener)
 
   return (
-    <article style={{
-      "alignItems": "center",
-      "display": "grid",
-      "gridTemplateColumns": "auto 20px 90px",
-      "gridTemplateRows": "auto",
-      "position": "relative",
-      "height": "100%",
-      "width": "100%",
-      "maxWidth": "100%",
-      "boxShadow": boxShadowVisible && "rgba(134, 142, 149, 0.2) 0px 4px 4px -2px",
-    }}>
-      <div style={{
+    <article
+      css={{
+        "alignItems": "center",
+        "display": "grid",
+        "gridTemplateColumns": "auto 20px 90px",
+        "gridTemplateRows": "auto",
         "position": "relative",
-        "overflowX": "auto",
+        "height": "100%",
+        "width": "100%",
+        "maxWidth": "100%",
+        "boxShadow": boxShadowVisible && "rgba(134, 142, 149, 0.2) 0px 4px 4px -2px",
       }}
+    >
+      <div
+        css={{
+          "position": "relative",
+          "overflowX": "auto",
+        }}
       >
-        <div className={`
+        <div
+          className={`
                         scroll_button_container
                         scroll_previous
                         ${scrollPreviousVisible ?
-            "scroll_button_container_visible" :
-            ""
-          }
+              "scroll_button_container_visible" :
+              ""
+            }
                     `}
         >
           <ScrollCategoriesButton
@@ -91,6 +76,9 @@ export function FilterBar() {
           ref={categoriesRef}
           setScrollPreviousVisible={setScrollPreviousVisible}
           setScrollNextVisible={setScrollNextVisible}
+          setCategoryID={(category_id) =>
+            setFilters((filters) => ({ ...filters, category_ID: category_id }))
+          }
         />
         <div
           className={`
@@ -107,11 +95,11 @@ export function FilterBar() {
         </div>
       </div>
       <button
-        style={{
+        css={{
           "alignItems": "center",
-          "backgroundColor": "white",
-          "borderRadius": "10px 10px 10px 10px",
-          "border": "1px solid var(--whisper-grey)",
+          "backgroundColor": theme.colors.background,
+          "borderRadius": theme.border.radiusSecondary,
+          "border": theme.border.create(),
           "boxSizing": "border-box",
           "display": "flex",
           "flexDirection": "row",
@@ -123,15 +111,9 @@ export function FilterBar() {
           "cursor": "pointer",
         }}
         type="button"
-        onClick={() => true}
+        onClick={() => setShowDialog(true)}
       >
-        <svg style={{
-          "display": "block",
-          "height": "14px",
-          "width": "14px",
-        }} viewBox="0 0 16 16">
-          <path d="M5 8a3 3 0 0 1 2.83 2H14v2H7.83A3 3 0 1 1 5 8zm0 2a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm6-8a3 3 0 1 1-2.83 4H2V4h6.17A3 3 0 0 1 11 2zm0 2a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"></path>
-        </svg>
+        <icons.filters />
         <div>Filters</div>
       </button>
     </article>
@@ -144,10 +126,13 @@ type CategoriesHandle = {
 interface CategoriesProps {
   setScrollPreviousVisible: React.Dispatch<React.SetStateAction<boolean>>
   setScrollNextVisible: React.Dispatch<React.SetStateAction<boolean>>
+  setCategoryID: (category_id: string) => void
 }
 const Categories = forwardRef<CategoriesHandle, CategoriesProps>(
-  ({ setScrollPreviousVisible, setScrollNextVisible }, ref) => {
-    const [categories, setCategories] = React.useState<{ id: string, name: string }[]>([])
+  ({ setScrollPreviousVisible, setScrollNextVisible, setCategoryID }, ref) => {
+    const [categories, setCategories] =
+      React.useState<{ id: string, name: string }[]>([])
+
     const [selectedIndex, setSelectedIndex] =
       React.useState<number | undefined>()
 
@@ -168,7 +153,8 @@ const Categories = forwardRef<CategoriesHandle, CategoriesProps>(
       )
 
       formRef.current?.scrollTo({
-        left: nextScrollPosition, behavior: 'smooth'
+        left: nextScrollPosition,
+        behavior: 'smooth'
       })
 
       updateScrollButtonVisibility(nextScrollPosition)
@@ -191,7 +177,9 @@ const Categories = forwardRef<CategoriesHandle, CategoriesProps>(
       )
     }
 
-    useEffect(() => { updateScrollButtonVisibility() })
+    useEffect(updateScrollButtonVisibility)
+
+    useEffect(updateScrollButtonVisibility, [useWindowSize()])
 
     function scale(element: HTMLElement, factor: number) {
       element.animate([
@@ -244,31 +232,31 @@ const Categories = forwardRef<CategoriesHandle, CategoriesProps>(
       fetchCategories()
     }, [api.categories])
 
-    // useEffect(() => {
-    //   async function fetchPlaces() {
-    //     const selectedCategoryId = categories[selectedIndex].id
-
-    //     // const data = await (await fetch(API_root + '/places_search', {
-    //     //   'method': 'post',
-    //     //   'body': JSON.stringify({
-    //     //     'category': selectedCategoryId
-    //     //   })
-    //     // })).json()
-    //   }
-
-    //   fetchPlaces()
-    // }, [selectedIndex])
+    const border_bottom_width = 2
 
     return (
       <form
         ref={formRef}
+        css={{
+          "display": "flex",
+          "flexDirection": "row",
+          "flexWrap": "nowrap",
+          "gap": "30px",
+          "height": "100%",
+          "justifyContent": "space-between",
+          "margin": "0px",
+          "overflowX": "auto",
+          "padding": "0px",
+          "scrollbarWidth": "none",
+          "whiteSpace": "nowrap",
+          "width": "100%"
+        }}
         className="categories"
         onScroll={(scrollEvent) =>
           updateScrollButtonVisibility(
             (scrollEvent.target as HTMLFormElement).scrollLeft
           )
         }
-
       >
         {
           categories.map(({ id: category_id, name: category_name }, index) => {
@@ -277,57 +265,69 @@ const Categories = forwardRef<CategoriesHandle, CategoriesProps>(
             return <li
               className={`category`}
               css={{
-                // "animation": `${styles.fade_color_out} ${fade_duration}s ease-out forwards`,
-                // "borderBottom": "solid 2px transparent",
-                // "color": "var(--unfocused-text-color)",
-                "paddingBottom": "12px",
+                // animation: `${animations.fade_color_out} ${fade_duration}s ease-in forwards`,
                 "alignItems": "center",
+                "borderBottom": theme.border.create({
+                  "width": border_bottom_width,
+                  "color": colors.transparent,
+                }),
                 "boxSizing": "border-box",
+                "color": theme.colors.tertiary,
                 "display": "flex",
                 "flexDirection": "column",
                 "flexWrap": "nowrap",
                 "fontSize": "12px",
                 "height": "100%",
                 "justifyContent": "space-around",
-                ":hover": index !== selectedIndex && {
-                  "animation": `${animations.fade_color_in} ${fade_duration} ease-in forwards`,
+                "paddingBottom": "12px",
+                transition: `color ${fade_duration}s ease-in-out, border-bottom ${fade_duration}s ease-in-out`,
+                ":hover": (index !== selectedIndex) && {
+                  color: theme.colors.selected,
+                  borderBottom: theme.border.create({
+                    width: border_bottom_width,
+                    color: theme.colors.tertiary,
+                  }),
                 },
                 ...(index === selectedIndex && {
-                  "color": "var(--focused-text-color)",
-                  "borderBottom": "solid 2px black"
+                  color: theme.colors.selected,
+                  borderBottom: theme.border.create({
+                    width: border_bottom_width,
+                    color: theme.colors.selected,
+                  })
                 })
               }}
               title={category_name}
               key={category_id}
               onClick={() => {
                 setSelectedIndex(index)
-                renderSearch(category_id)
+                setCategoryID(category_id)
               }}
-              onMouseDown={_ => scale(_.currentTarget!, 0.95)}
-              onMouseUp={_ => scale(_.currentTarget!, 1)}
             >
               <div
                 ref={animationContainerRef}
-                style={{
+                css={{
                   'display': 'inherit',
                   'flexDirection': 'inherit',
                   'alignItems': 'inherit',
                   'justifyContent': 'inherit',
                 }}
+                onMouseDown={mouseEvent => scale(mouseEvent.currentTarget!, 0.95)}
+                onMouseUp={mouseEvent => scale(mouseEvent.currentTarget!, 1)}
               >
-                <span style={{
-                  "display": "flex",
-                  "height": "40px",
-                  "margin": "5px",
-                  "textAlign": "center",
-                  "alignItems": "center",
-                  "width": "40px"
-                }}>
-                  <img src="../static/images/house_icon.jpg"
-                    css={{
-                      "height": "100%",
-                      "width": "100%",
-                    }}
+                <span
+                  css={{
+                    "display": "flex",
+                    "height": "40px",
+                    "margin": "5px",
+                    "textAlign": "center",
+                    "alignItems": "center",
+                    "width": "40px"
+                  }}
+                >
+                  <icons.house
+                    fill={selectedIndex === index ?
+                      theme.colors.selected : theme.colors.tertiary
+                    }
                   />
                 </span>
                 <span>{category_name}</span>
@@ -347,35 +347,39 @@ interface ScrollCategoriesButtonProps {
 }
 function ScrollCategoriesButton({ disabled, onClick, arrowDirection }: ScrollCategoriesButtonProps) {
 
-  const degrees = arrowDirection === "left" ? 45 : 135
+  const arrowLine = theme.border.create({
+    "width": 2,
+    "color": theme.colors.secondary,
+  })
 
   return <button
     className="scroll_button"
     disabled={disabled}
-    style={{
+    css={{
       "cursor": disabled ? "default" : "pointer",
     }}
     type="button"
     onClick={onClick}
   >
-    <div style={{
-      display: "flex",
-      alignItems: "center",
-      boxSizing: "border-box",
-      height: "100%",
-      maxWidth: "7px",
-      overflow: "hidden",
-      transform: arrowDirection == "right" && "rotate(180deg)",
-    }}>
+    <div
+      css={{
+        display: "flex",
+        alignItems: "center",
+        boxSizing: "border-box",
+        height: "100%",
+        maxWidth: "7px",
+        overflow: "hidden",
+        transform: arrowDirection == "right" && "rotate(180deg)",
+      }}>
       <div
         className="scroll_button_arrow"
-        style={{
+        css={{
           "transform": `rotate(45deg)`,
           "margin": "1px",
           "minWidth": "7.5px",
           "minHeight": "7.5px",
-          "borderBottom": "2px solid black",
-          "borderLeft": "2px solid black",
+          "borderBottom": arrowLine,
+          "borderLeft": arrowLine,
           "backgroundColor": "transparent",
           "borderRadius": "0 1.5px",
           "boxSizing": "border-box",

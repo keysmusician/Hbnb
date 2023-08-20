@@ -29,13 +29,15 @@ $(_ => {
 });
 
 export function renderSearch(selected_category) {
-  $('#places').empty();
   const filters = {
-    amenities: Array.from(selected_amenities.keys()),
+    amenities: $("input[name='amenities']:checked").map(
+      function () { return this.value; }).get(),
     cities: Array.from(selected_cities.keys()),
+    price_min: $('#price_min').val(),
+    price_max: $('#price_max').val(),
     category: selected_category
   };
-  searchPlaces(filters, populatePlace);
+  searchPlaces(filters);
 }
 
 function checkAPIStatus () {
@@ -84,6 +86,8 @@ function selectCities () {
 }
 
 function populatePlace (data) {
+  $('#places').empty();
+
   data.forEach(place => {
 
     const places_html = `
@@ -114,7 +118,7 @@ function populatePlace (data) {
   });
 }
 
-function searchPlaces (filters, successCallBack) {
+export function searchPlaces(filters) {
   $.post({
     url: API_root + 'places_search',
     crossDomain: true,
@@ -122,7 +126,7 @@ function searchPlaces (filters, successCallBack) {
     dataType: 'json',
     contentType: 'application/json',
     data: JSON.stringify(filters),
-    success: successCallBack,
+    success: populatePlace,
     error: function () {
       console.log('Cannot get data');
     }

@@ -1,16 +1,9 @@
-:root {
-	--medium-grey: rgb(168, 168, 168);
-	--whisper-grey: rgb(221, 221, 221);
-
-	--scroll-button-fade-duration: 0.3s;
-}
-
 :root:first-child {
 	--focused-text-color: black;
 	--unfocused-text-color: var(--medium-grey);
 }
 
-.categories {
+/* .categories {
 	display: flex;
 	flex-direction: row;
 	flex-wrap: nowrap;
@@ -23,7 +16,7 @@
 	scrollbar-width: none;
 	white-space: nowrap;
 	width: 100%;
-}
+} */
 
 /* .category:active  .scale_down_animation_container {
 	animation: scale_down 0.3s ease forwards;

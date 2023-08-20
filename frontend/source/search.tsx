@@ -1,4 +1,5 @@
 import { keyframes } from '@emotion/react';
+import { theme } from './theme';
 
 
 namespace styles {
@@ -38,8 +39,8 @@ export function Search() {
       <article className='search_buttons' css={{
         "display": "flex",
         "alignItems": "center",
-        "border": "1px solid var(--whisper-grey)",
-        "borderRadius": "100px",
+        "border": theme.border.create(),
+        "borderRadius": theme.border.radiusPrimary,
         "boxShadow": "0 3px 5px -2px var(--whisper-grey)",
         "height": "100%",
         "cursor": "pointer",
@@ -49,35 +50,42 @@ export function Search() {
         }
       }
       } >
-        <button className='anywhere' style={
-          {
-            ...styles.searchBarButton,
-            "borderRadius": "100px 0 0 100px"
-          }
+        <button
+          className='anywhere'
+          css={
+            {
+              ...styles.searchBarButton,
+              "borderRadius": "100px 0 0 100px"
+            }
 
-        }>
+          }>
           <div style={styles.searchBarButtonDiv}>
             Anywhere
           </div>
         </button>
-        <button style={{
-          ...styles.searchBarButton,
-          "borderWidth": "0 1px",
-          "borderStyle": "solid",
-          "borderColor": "var(--whisper-grey)",
-        }}>
+        <button
+          css={{
+            ...styles.searchBarButton,
+            "borderWidth": "0 1px",
+            "borderStyle": "solid",
+            "borderColor": "var(--whisper-grey)",
+          }}
+        >
           <div style={styles.searchBarButtonDiv}>
             Any week
           </div>
         </button>
-        <button className='add_guests' style={{
-          ...styles.searchBarButton,
-          "display": "flex",
-          "alignItems": "center",
-          "justifyContent": "center",
-          "color": "var(--unfocused-grey)",
-          "borderRadius": "0 100px 100px 0",
-        }}>
+        <button
+          className='add_guests'
+          css={{
+            ...styles.searchBarButton,
+            "display": "flex",
+            "alignItems": "center",
+            "justifyContent": "center",
+            "color": "var(--unfocused-grey)",
+            "borderRadius": "0 100px 100px 0",
+          }}
+        >
           <div style={styles.searchBarButtonDiv}>
             Add guests
           </div>
