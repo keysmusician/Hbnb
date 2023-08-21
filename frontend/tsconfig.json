@@ -1,0 +1,11 @@
+{
+	"compilerOptions": {
+		"jsx": "react-jsx",
+		"jsxImportSource": "@emotion/react",
+		"esModuleInterop": true,
+		"lib": [
+			"ES6",
+			"DOM"
+		],
+	}
+}

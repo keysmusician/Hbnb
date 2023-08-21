@@ -13,8 +13,9 @@ class StorageEngineBase:
         Counts the number of objects in storage.
 
         model: A model of which to count the number of instances in storage.
+            if `None`, counts the number of instances of all models in storage.
         """
-        return len(self.all()) if not model else len(self.all(model))
+        return len(self.all(model))
 
     @property
     def models(self):
@@ -30,6 +31,6 @@ class StorageEngineBase:
         from models.review import Review
         from models.state import State
         from models.user import User
+        from models.category import Category
 
-        return (Amenity, City, Place, Review, State, User)
-
+        return (Amenity, Category, City, Place, Review, State, User)

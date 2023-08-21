@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	{% include 'head.html.jinja' %}
+	<link rel="stylesheet" type="text/css" href="../static/styles/place.css?{{ cache_id }}">
+</head>
+
+<body>
+	{% include 'header.html.jinja' %}
+	<main class="container">
+		<section id="place">
+			<div class="title_box">
+				<h2>{{ place.name }}</h2>
+			</div>
+			<div class="city">
+				<b>{{ place.city.name }}, {{ place.city.state.name }}</b>
+			</div>
+			<div class="information">
+				<div class="max_guest">{{ place.max_guest }} Guest{% if place.max_guest != 1 %}s{% endif %}</div>
+				<div class="number_rooms">{{ place.number_rooms }} Bedroom{% if place.number_rooms != 1 %}s{% endif %}</div>
+				<div class="number_bathrooms">{{ place.number_bathrooms }} Bathroom{% if place.number_bathrooms != 1%}s{% endif %}</div>
+			</div>
+			<div class="description">
+				{{ place.description | safe }}
+			</div>
+			<div class="price_by_night">
+				<b>${{ place.price_by_night }}</b> night
+			</div>
+		</section>
+	</main>
+	{% include 'footer.html.jinja' %}
+</body>
+
+</html>

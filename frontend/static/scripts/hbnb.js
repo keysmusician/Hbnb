@@ -4,6 +4,8 @@ const selected_amenities = new Map();
 
 const selected_cities = new Map();
 
+const selected_category = ""
+
 $(_ => {
   checkAPIStatus();
   selectAmenities();
@@ -23,21 +25,27 @@ $(_ => {
   //$.post(ajaxSettings);
 
   // Add click listener on search button
-  $('button').on('click', _ => {
-    $('#places').empty();
-    const filters = {
-      amenities: Array.from(selected_amenities.keys()),
-      cities: Array.from(selected_cities.keys())
-    };
-    searchPlaces(filters, populatePlace);
-  });
+  $('#static_search_button').on('click', _ => renderSearch(selected_category));
 });
+
+export function renderSearch(selected_category) {
+  const filters = {
+    amenities: $("input[name='amenities']:checked").map(
+      function () { return this.value; }).get(),
+    cities: Array.from(selected_cities.keys()),
+    price_min: $('#price_min').val(),
+    price_max: $('#price_max').val(),
+    category: selected_category
+  };
+  searchPlaces(filters);
+}
 
 function checkAPIStatus () {
   $.get(API_root + 'status/', function (response) {
     if (response.status === 'OK') {
-      $('DIV#api_status').addClass('available');
-      $('DIV#api_status').prop('title', 'API status: available');
+      $('DIV#api_status')
+        .addClass('available')
+        .prop('title', 'API status: available');
     }
   });
 }
@@ -79,6 +87,8 @@ function selectCities () {
 }
 
 function populatePlace (data) {
+  $('#places').empty();
+
   data.forEach(place => {
 
     const places_html = `
@@ -109,7 +119,7 @@ function populatePlace (data) {
   });
 }
 
-function searchPlaces (filters, successCallBack) {
+export function searchPlaces(filters) {
   $.post({
     url: API_root + 'places_search',
     crossDomain: true,
@@ -117,7 +127,7 @@ function searchPlaces (filters, successCallBack) {
     dataType: 'json',
     contentType: 'application/json',
     data: JSON.stringify(filters),
-    success: successCallBack,
+    success: populatePlace,
     error: function () {
       console.log('Cannot get data');
     }

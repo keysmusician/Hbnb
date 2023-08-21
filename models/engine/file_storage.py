@@ -3,6 +3,7 @@
 Defines the file storage engine.
 """
 import json
+from os import getenv
 from pathlib import Path
 from models.engine.storage_engine_base import StorageEngineBase
 
@@ -18,14 +19,16 @@ class FileStorage(StorageEngineBase):
     """
 
     # Path to the serialized JSON data file
-    __file_path = Path(__file__).parent.parent.parent / "data" / "Hbnb_FileStorage.json"
+    __file_path = Path(__file__).parent.parent.parent / \
+        "data" / "Hbnb_FileStorage.json"
 
     # Stores all objects by <class name>.id
     __objects = {}
 
     def all(self, model=None) -> dict:
         """
-        Returns all stored objects, optionally of a given model.
+        Returns a dict of all stored objects and their IDs, optionally of a
+        given model.
 
         model: A model or model name.
         """
@@ -48,7 +51,7 @@ class FileStorage(StorageEngineBase):
         Does nothing for this FileStorage engine, but this function exists to
         be compatible with the storage engine API.
         """
-        #self.save()
+        # self.save()
         pass
 
     def delete(self, object=None):
@@ -68,6 +71,7 @@ class FileStorage(StorageEngineBase):
         Returns a model instance by (model or model name) and ID.
 
         model: (str | type) Model or model name.
+        id: (str) Model ID.
 
         Returns `None` if not found.
         """
@@ -92,15 +96,61 @@ class FileStorage(StorageEngineBase):
         """
         Deserializes objects from a JSON file.
         """
+        DEBUG = getenv("DEBUG")
+
+        if DEBUG:
+            print(f'{__class__}.reload: Loading objects from file.')
+
+        def warn(message):
+            print(
+                f'{__class__}.reload: '
+                f'WARNING: {message}'
+            )
+
         class_map = {cls.__name__: cls for cls in self.models}
 
         try:
-            with open(self.__file_path, 'r') as f:
-                JSON_object = json.load(f)
+            with open(self.__file_path, 'r') as text_file_handle:
+                JSON_object: dict = json.load(text_file_handle)
 
-            for key in JSON_object:
-                cls = class_map[JSON_object[key]["__class__"]]
-                self.__objects[key] = cls(**JSON_object[key])
+            class_name_key = "__class__"
+
+            for key, value in JSON_object.items():
+                # deserialize
+                if type(value) is not dict:
+                    warn(
+                        f'Expected a `dict` object, but got a: {type(value)}. '
+                        f'Skipping: {value}'
+                    )
+                    continue
+
+                class_name = value.get(class_name_key)
+
+                if class_name is None:
+                    warn(
+                        f'Expected the "{class_name_key}" key in JSON object, '
+                        f'but it was missing. Skipping: {value}'
+                    )
+                    continue
+
+                cls = class_map.get(class_name)
+
+                if cls is None:
+                    warn(
+                        f'No class object found for "{class_name}".'
+                        f'Skipping: {value}'
+                    )
+                    continue
+
+                self.__objects[key] = cls(**value)
+
+            if DEBUG:
+                object_count = len(self.__objects)
+                s = "s" if object_count != 1 else ""
+                print(
+                    f'{__class__}.reload: Loaded {object_count} '
+                    f'object{s} from file.'
+                )
         except FileNotFoundError:
             print(
                 f'{__class__}.reload: '
