@@ -1,4 +1,4 @@
-footer {
+body>footer {
     align-items: center;
     background: white;
     border-top: .5px solid #CCCCCC;
@@ -13,20 +13,21 @@ footer {
     width: 100%;
 }
 
-footer .left, footer .right {
+body>footer .left,
+body>footer .right {
     flex-basis: 0;
     flex-grow: 1;
 }
 
-footer .right {
+body>footer .right {
     text-align: end;
 }
 
-footer .center {
+body>footer .center {
     padding: 0px 20px;
     text-align: center;
 }
 
-footer i:hover {
+body>footer i:hover {
     color: var(--primary-color);
 }

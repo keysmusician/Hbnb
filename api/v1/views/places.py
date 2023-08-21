@@ -135,10 +135,15 @@ def places_search():
     Retrieves all Place objects matching the search query.
     """
     class Filter(Enum):
-        states = 'states'
-        cities = 'cities'
-        amenities = 'amenities'
-        category = 'category'
+        states = 'state_IDs'
+        cities = 'city_IDs'
+        amenities = 'amenity_IDs'
+        category = 'category_ID'
+        price_min = 'price_min'
+        price_max = 'price_max'
+        bedroom_count = 'bedroom_count'
+        bathroom_count = 'bathroom_count'
+        guest_count = 'guest_count'
 
     search_query = request.get_json(silent=True)
 
@@ -153,55 +158,43 @@ def places_search():
             f"the filter keys: {[filter.value for filter in Filter]}"
         )
 
-    state_ids, city_ids, amenity_ids, category_id = (
-        search_query.get(filter.value, None) for filter in Filter)
+    (
+        state_ids,
+        city_ids,
+        amenity_ids,
+        category_id,
+        price_min,
+        price_max,
+        bedroom_count,
+        bathroom_count,
+        guest_count,
+    ) = (search_query.get(filter.value, None) for filter in Filter)
 
-    list_places = []  # TODO: use a set instead
+    all_places = list(storage_engine.all(Place).values())
 
-    # TODO: Compare id's instead of instances. No need to hit the database.
-    if state_ids:
-        states = [
-            storage_engine.get(State, state_id) for state_id in state_ids]
-
-        for state in states:
-            if state:
-                for city in state.cities:
-                    if city:
-                        for place in city.places:
-                            list_places.append(place)
-
-    if city_ids:
-        city_obj = [storage_engine.get(City, c_id) for c_id in city_ids]
-        for city in city_obj:
-            if city:
-                for place in city.places:
-                    if place not in list_places:
-                        list_places.append(place)
-
-    if amenity_ids:
-        if not list_places:
-            list_places = list(storage_engine.all(Place).values())
-
-        amenities = [
-            storage_engine.get(Amenity, amenity_id)
-            for amenity_id in amenity_ids
-        ]
-
-        list_places = [
-            place for place in list_places if
-            all(amenity in place.amenities for amenity in amenities)
-        ]
-
-    if category_id:
-        if not list_places:
-            list_places = list(storage_engine.all(Place).values())
-
-        list_places = [
-            place for place in list_places if place.category_id == category_id
-        ]
-
-    if not list_places:
-        list_places = list(storage_engine.all(Place).values())
+    list_places = [
+        place for place in all_places if (
+            not state_ids or place.city.state_id in state_ids
+        ) and (
+            not city_ids or place.city_id in city_ids
+        ) and (
+            not category_id or place.category_id == category_id
+        ) and (
+            not amenity_ids or all(
+                amenity_id in place.amenity_ids for amenity_id in amenity_ids
+            )
+        ) and (
+            price_min is None or place.price_by_night >= price_min
+        ) and (
+            price_max is None or place.price_by_night <= price_max
+        ) and (
+            not bedroom_count or place.number_rooms == bedroom_count
+        ) and (
+            not bathroom_count or place.number_bathrooms == bathroom_count
+        ) and (
+            not guest_count or place.max_guest == guest_count
+        )
+    ]
 
     places = []
 

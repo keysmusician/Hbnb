@@ -1,38 +1,125 @@
-header {
+body>header {
     background: white;
     align-items: center;
-    border-bottom: .5px solid #f0f0f0;
+    border-bottom: 1px solid #f0f0f0;
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
     height: 80px;
+    justify-content: space-between;
     position: sticky;
+    top: 0px;
     z-index: 1;
 }
 
-header:first-child {
-    top: 0px;
-}
-
-header #logo img {
+body>header #logo img {
     height: 48px;
     width: 113.6px;
 }
 
 #api_status {
+    align-items: center;
     background-color: #cccccc;
     border-radius: 50%;
-    height: 40px;
-    min-height: 40px;
-    margin-left: auto;
-    width: 40px;
-    min-width: 40px;
+    display: flex;
+    justify-content: center;
+    min-height: 1rem;
+    min-width: 1rem;
+}
+
+@keyframes grow {
+    0% {
+        min-width: scale(1);
+    }
+
+    100% {
+        transform: scale(1.5);
+    }
+}
+
+@keyframes counter {
+    0% {
+        scale: 1;
+    }
+
+    100% {
+        scale: 0.666666667;
+    }
+}
+
+@keyframes shrink {
+    0% {
+        transform: scale(1);
+    }
+
+    100% {
+        transform: scale(.75);
+    }
+}
+
+@keyframes background_fade_out {
+    100% {
+        background-color: transparent;
+    }
 }
 
 #api_status.available {
     background-color: var(--primary-color);
+    animation-name: grow, background_fade_out;
+    animation-duration: 2s;
+    animation-timing-function: ease-out;
+    animation-iteration-count: infinite;
+    animation-direction: normal;
 }
 
-#search {
-    width: 100%;
+#api_status.available:hover,
+#api_status.available:hover * {
+    color: white;
+    animation: none;
+}
+
+#api_status.available .api_center {
+    align-items: center;
+    animation-direction: alternate, normal;
+    animation-duration: 1s, 2s;
+    animation-iteration-count: infinite;
+    animation-name: shrink, counter;
+    animation-timing-function: ease-in-out, ease-out;
+    background-color: var(--primary-color);
+    border-radius: 1rem;
+    color: transparent;
+    display: flex;
+    font-size: 1em;
+    height: 1.5rem;
+    justify-content: center;
+    transition: width .5s ease-in-out, color .1s ease-in-out;
+    width: 1.5rem;
+}
+
+#api_status.available:hover .api_center {
+    transition-property: width, height, color;
+    transition-duration: .5s;
+    transition-timing-function: ease-in-out;
+    animation: none;
+    color: white;
+    width: 2.5rem;
+    height: 1.5rem;
+}
+
+#api_status_container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 2rem;
+}
+
+a:focus #api_status_container * {
+    animation: none !important;
+    transition-property: width, height, color !important;
+    transition-duration: .5s;
+    transition-timing-function: ease-in-out;
+    animation: none;
+    color: white !important;
+    width: 2.5rem;
+    height: 1.5rem !important;
 }

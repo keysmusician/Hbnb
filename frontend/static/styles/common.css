@@ -1,5 +1,8 @@
 :root {
-    --primary-color: #ff545f
+    --primary-color: #ff545f;
+    --medium-grey: rgb(168, 168, 168);
+    --whisper-grey: rgb(221, 221, 221);
+    --scroll-button-fade-duration: 0.3s;
 }
 
 html {
@@ -27,7 +30,7 @@ body {
     min-height: 100%;
 }
 
-body main .container {
+body>main.container {
     margin: 0;
     margin-bottom: 50px;
     /* Equal to the height of the footer */
