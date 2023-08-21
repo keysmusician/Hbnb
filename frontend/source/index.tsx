@@ -3,9 +3,10 @@ import './categories.css';
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { FilterBar } from './categories';
-import { Search } from './search';
+import { SearchBar } from './search';
 import { FilterDialog } from './filtersDialog';
 import { searchPlaces } from "../static/scripts/hbnb.js"
+import { API_root } from "../static/scripts/api_root.js"
 
 
 export interface Filters {
@@ -18,6 +19,17 @@ export interface Filters {
 	bedroom_count?: number
 	bathroom_count?: number
 }
+
+export const api_routes = {
+	home: API_root + "status",
+	cities: API_root + "cities",
+	states: API_root + "states",
+	amenities: API_root + "amenities",
+	categories: API_root + "categories",
+	places: API_root + "places",
+	places_search: API_root + "places_search",
+}
+
 
 let filters: Filters = {
 	category_ID: "",
@@ -37,7 +49,7 @@ function setShowDialog(showDialog: boolean) {
 }
 
 createRoot(document.getElementById('search')!).render(
-	<Search setFilters={setFilters} />
+	<SearchBar setFilters={setFilters} />
 );
 
 createRoot(document.getElementById('filters')!).render(

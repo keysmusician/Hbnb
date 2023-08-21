@@ -2,8 +2,6 @@
 
   - Make categories accessibly navigable
 
-  - Fix category hover fade out
-
 - Filter modal:
 
   - Styling
@@ -20,8 +18,8 @@
 
   - Enter should submit
 
-- Search component
-
-- Animate API indicator, anchor/link it to API
-
 - Responsive layouts
+
+- Use box shadow builder consistently
+
+- Use route references consistently

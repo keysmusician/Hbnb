@@ -174,13 +174,13 @@ def places_search():
 
     list_places = [
         place for place in all_places if (
-            state_ids is None or place.city.state_id in state_ids
+            not state_ids or place.city.state_id in state_ids
         ) and (
-            city_ids is None or place.city_id in city_ids
+            not city_ids or place.city_id in city_ids
         ) and (
             not category_id or place.category_id == category_id
         ) and (
-            amenity_ids is None or all(
+            not amenity_ids or all(
                 amenity_id in place.amenity_ids for amenity_id in amenity_ids
             )
         ) and (

@@ -1,10 +1,13 @@
 export namespace colors {
 	export const white = "white"
 	export const black = "black"
+	export const lightGrey = "rgb(235, 235, 235)"
 	export const transparent = "transparent"
-	export const AirBnb_red = "rgb(255, 56, 92)"
-	export const AirBnb_grey = 'rgb(113, 113, 113)'
-	export const AirBnb_grey_2 = 'rgb(235, 235, 235)'
+	export const AirBnbRed = "rgb(255, 56, 92)"
+	export const AirBnbRed2 = "#E00B41"
+	export const AirBnbGrey = 'rgb(113, 113, 113)'
+	export const AirBnbGrey2 = 'rgb(221, 221, 221)'
+	export const AirBnbGrey3 = 'rgb(235, 235, 235)'
 }
 
 export namespace typography {
@@ -20,14 +23,17 @@ const _colors = colors
 
 export namespace theme {
 	export namespace colors {
-		export const primary = _colors.AirBnb_red
+		export const primary = _colors.AirBnbRed
 		export const onPrimary = _colors.white
+		export const primaryHover = _colors.AirBnbRed2
 		export const secondary = _colors.black
 		export const onSecondary = _colors.white
-		export const tertiary = _colors.AirBnb_grey
+		export const tertiary = _colors.AirBnbGrey
 		export const onTertiary = _colors.white
 		export const background = _colors.white
-		export const border = _colors.AirBnb_grey_2
+		export const border = _colors.lightGrey
+		export const behind = border
+		export const focused = _colors.AirBnbGrey2
 		export const selected = secondary
 		export const onSelected = onSecondary
 	}
@@ -38,14 +44,6 @@ export namespace theme {
 		export const letterSpacing = 0
 		export const lineHeight = 1.5
 		export const textTransform = "none"
-	}
-	export namespace elevation {
-		export const elevation = 2
-		export const onElevation = 2
-		export const hoverElevation = 4
-		export const focusElevation = 8
-		export const activeElevation = 8
-		export const disabledElevation = 0
 	}
 	export namespace opacity {
 		export const hoverOpacity = 0.08
@@ -58,7 +56,7 @@ export namespace theme {
 		export const radiusSecondary = "1em" // ditto
 		export const borderWidth = 1
 		export const borderStyle = "solid"
-		export const borderColor = _colors.AirBnb_grey_2
+		export const borderColor = colors.border
 		export const create = ({
 			width = borderWidth,
 			style = borderStyle,
@@ -67,13 +65,19 @@ export namespace theme {
 			`${width}px ${style} ${color}`
 	}
 	export namespace boxShadow {
-		export const boxShadow = "0 2px 4px 0 rgba(0, 0, 0, 0.5)"
-		export const boxShadowColor = _colors.black
 		export const boxShadowOpacity = 0.5
-		export const boxShadowBlur = 4
-		export const boxShadowSpread = 0
+		export const boxShadowBlur = 5
+		export const boxShadowSpread = -2
 		export const boxShadowHorizontal = 0
-		export const boxShadowVertical = 2
+		export const boxShadowVertical = 3
+		export const create = ({
+			opacity = boxShadowOpacity,
+			blur = boxShadowBlur,
+			spread = boxShadowSpread,
+			horizontal = boxShadowHorizontal,
+			vertical = boxShadowVertical,
+		} = {}) =>
+			`${horizontal}px ${vertical}px ${blur}px ${spread}px rgba(0, 0, 0, ${opacity})`
 	}
 	export namespace transition {
 		export const transitionDuration = 0.15
@@ -91,6 +95,14 @@ export namespace theme {
 	}
 
 	// Suggested by CoPilot:
+	// export namespace elevation {
+	// 	export const elevation = 2
+	// 	export const onElevation = 2
+	// 	export const hoverElevation = 4
+	// 	export const focusElevation = 8
+	// 	export const activeElevation = 8
+	// 	export const disabledElevation = 0
+	// }
 	// export const onBackground = colors.black
 	// export const onSurface = colors.black
 	// export const onError = colors.white
@@ -127,13 +139,6 @@ export namespace theme {
 	// export const letterSpacing = 0
 	// export const lineHeight = 1.5
 	// export const textTransform = "none"
-	// export const boxShadow = "0 2px 4px 0 rgba(0, 0, 0, 0.5)"
-	// export const boxShadowColor = colors.black
-	// export const boxShadowOpacity = 0.5
-	// export const boxShadowBlur = 4
-	// export const boxShadowSpread = 0
-	// export const boxShadowHorizontal = 0
-	// export const boxShadowVertical = 2
 	// export const transitionDuration = 0.2
 	// export const transitionTimingFunction = "ease-in-out"
 	// export const transitionDelay = 0
@@ -156,13 +161,48 @@ export namespace icons {
 		</g>
 	</svg>
 
-	export const filters = ({ fill = theme.colors.secondary }) => <svg
-		fill={fill}
-		css={{
-			"display": "block",
-			"height": "14px",
-			"width": "14px",
-		}} viewBox="0 0 16 16">
-		<path d="M5 8a3 3 0 0 1 2.83 2H14v2H7.83A3 3 0 1 1 5 8zm0 2a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm6-8a3 3 0 1 1-2.83 4H2V4h6.17A3 3 0 0 1 11 2zm0 2a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"></path>
-	</svg>
+	export const filters = ({ fill = theme.colors.secondary }) =>
+		<svg
+			fill={fill}
+			css={{
+				"display": "block",
+				"height": "14px",
+				"width": "14px",
+			}} viewBox="0 0 16 16">
+			<path d="M5 8a3 3 0 0 1 2.83 2H14v2H7.83A3 3 0 1 1 5 8zm0 2a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm6-8a3 3 0 1 1-2.83 4H2V4h6.17A3 3 0 0 1 11 2zm0 2a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"></path>
+		</svg>
+
+	export const magnifyingGlass = ({ fill = theme.colors.secondary }) =>
+		<svg
+			xmlns="http://www.w3.org/2000/svg"
+			viewBox="0 0 32 32"
+			css={{
+				display: "block",
+				fill: fill,
+				height: "12px",
+				width: "12px",
+				stroke: fill,
+				strokeWidth: " 5.33333px",
+				overflow: "visible",
+			}}
+			aria-hidden="true"
+			role="presentation"
+			focusable="false"
+		>
+			<path
+				fill="none"
+				d="M13 24a11 11 0 1 0 0-22 11 11 0 0 0 0 22zm8-3 9 9"
+			/>
+		</svg>
+
+	// export const arrowDown = ({ fill = theme.colors.secondary }) =>
+	// 	<svg
+	// 		fill={fill}
+	// 		css={{
+	// 			"display": "block",
+	// 			"height": "14px",
+	// 			"width": "14px",
+	// 		}} viewBox="0 0 24 24">
+	// 		<path d="M7 10l5 5 5-5z"></path>
+	// 	</svg>
 }

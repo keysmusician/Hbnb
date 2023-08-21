@@ -112,3 +112,14 @@ body>header #logo img {
     align-items: center;
     width: 2rem;
 }
+
+a:focus #api_status_container * {
+    animation: none !important;
+    transition-property: width, height, color !important;
+    transition-duration: .5s;
+    transition-timing-function: ease-in-out;
+    animation: none;
+    color: white !important;
+    width: 2.5rem;
+    height: 1.5rem !important;
+}
