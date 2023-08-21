@@ -1,13 +1,13 @@
 import { forwardRef, useEffect, useImperativeHandle } from "react"
 import React from "react"
-import { API_root } from "../static/scripts/api_root.js"
 import { useWindowSize } from "./library.js"
 import { theme, icons, colors } from "./theme.js"
 import { Filters } from "./index.js"
+import { api_routes } from "./routes.js"
 
 
 namespace api {
-  export const categories = fetch(API_root + "/categories")
+  export const categories = fetch(api_routes.categories)
 }
 
 

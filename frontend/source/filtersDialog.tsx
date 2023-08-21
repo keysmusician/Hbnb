@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import { theme } from "./theme";
-import { API_root } from "../static/scripts/api_root.js";
 import { Filters } from ".";
+import { api_routes } from "./routes";
+
 
 interface Amenity {
 	id: string;
@@ -10,7 +11,7 @@ interface Amenity {
 
 async function fetchAmenities() {
 	//TODO: Error handling
-	return fetch(API_root + "/amenities").then((response) => response.json())
+	return fetch(api_routes.amenities).then((response) => response.json())
 }
 
 interface FilterDialogProps {

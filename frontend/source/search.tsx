@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { theme, icons } from './theme'
-import { api_routes } from '.'
+import { api_routes } from './routes'
 
 
 namespace styles {
