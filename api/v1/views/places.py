@@ -8,11 +8,8 @@ from flasgger.utils import swag_from
 from flask import abort, jsonify, make_response, request
 from http import HTTPStatus
 from models import storage_engine
-from models.amenity import Amenity
-from models.category import Category
 from models.city import City
 from models.place import Place
-from models.state import State
 from models.user import User
 
 

@@ -98,14 +98,14 @@ class FileStorage(StorageEngineBase):
         """
         DEBUG = getenv("DEBUG")
 
-        if DEBUG:
-            print(f'{__class__}.reload: Loading objects from file.')
+        def _print(message):
+            print(f'{__class__}.reload:', message)
 
         def warn(message):
-            print(
-                f'{__class__}.reload: '
-                f'WARNING: {message}'
-            )
+            _print(f'WARNING: {message}')
+
+        if DEBUG:
+            _print('Loading objects from file.')
 
         class_map = {cls.__name__: cls for cls in self.models}
 
@@ -147,21 +147,16 @@ class FileStorage(StorageEngineBase):
             if DEBUG:
                 object_count = len(self.__objects)
                 s = "s" if object_count != 1 else ""
-                print(
-                    f'{__class__}.reload: Loaded {object_count} '
-                    f'object{s} from file.'
-                )
+                _print(f'Loaded {object_count} object{s} from file.')
         except FileNotFoundError:
-            print(
-                f'{__class__}.reload: '
-                'WARNING: Could not load objects from file '
+            warn(
+                'Could not load objects from file '
                 f"'{self.__file_path}'. File not found."
             )
             pass
         except Exception as e:
-            print(
-                f'{__class__}.reload: '
-                'WARNING: Could not load objects from file '
+            warn(
+                'Could not load objects from file '
                 f"'{self.__file_path}'.", e
             )
 

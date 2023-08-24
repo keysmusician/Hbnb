@@ -1,13 +1,13 @@
 {
   "source/index.css": {
-    "file": "assets/index-08a8516d.css",
+    "file": "static/styles/index.css",
     "src": "source/index.css"
   },
   "source/index.tsx": {
     "css": [
-      "assets/index-08a8516d.css"
+      "static/styles/index.css"
     ],
-    "file": "assets/index-54ba7bc8.js",
+    "file": "static/scripts/index.js",
     "isEntry": true,
     "src": "source/index.tsx"
   }

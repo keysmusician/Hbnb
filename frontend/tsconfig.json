@@ -3,9 +3,16 @@
 		"jsx": "react-jsx",
 		"jsxImportSource": "@emotion/react",
 		"esModuleInterop": true,
+		"target": "ES6",
+		"types": [
+			"react",
+			"react-dom",
+			"vite/client",
+		],
 		"lib": [
 			"ES6",
 			"DOM"
 		],
+		"module": "ES2022",
 	}
 }
