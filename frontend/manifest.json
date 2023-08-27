@@ -1,8 +1,4 @@
 {
-  "source/index.css": {
-    "file": "static/styles/index.css",
-    "src": "source/index.css"
-  },
   "source/index.tsx": {
     "file": "static/scripts/index.js",
     "isEntry": true,

@@ -384,8 +384,6 @@ function ScrollCategories({ direction, enabled, onClick }: ScrollCategoriesProps
   useEffect(() => {
     const button = divRef.current
 
-    console.log(`Fading ${enabled ? 'in' : 'out'} ${direction} button}`)
-
     if (!button) return
 
     button.animate(
