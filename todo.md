@@ -20,6 +20,6 @@
 
 - Responsive layouts
 
-- Remove duplicate requests for assets
-
 - Fix chrome issues (incorrect use of elements/attributes)
+
+- Trap shutdown signal properly
