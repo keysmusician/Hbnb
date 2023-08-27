@@ -3,6 +3,7 @@
     --medium-grey: rgb(168, 168, 168);
     --whisper-grey: rgb(221, 221, 221);
     --scroll-button-fade-duration: 0.3s;
+    --window-padding: 40px;
 }
 
 html {
@@ -50,6 +51,6 @@ body>footer {
     #places,
     #filters>article,
     body>footer {
-        padding: 0px 40px;
+        padding: 0px var(--window-padding);
     }
 }

@@ -2,24 +2,24 @@
 
   - Make categories accessibly navigable
 
+- Make places & checkboxes accessibly navigable
+
 - Filter modal:
-
-  - Styling
-
-  - Fix modal causing scrollbar to move things horizontally
 
   - Selected filter counter & border
 
-  - Fix filter modal scrollbar position
-
-  - Price double slider https://refreshless.com/nouislider/
+  - Add price range double slider https://refreshless.com/nouislider/
 
   - Clear all filters button
 
   - Enter should submit
 
+- Search bar:
+
+  - Enter should submit
+
 - Responsive layouts
 
-- Use box shadow builder consistently
+- Remove duplicate requests for assets
 
-- Use route references consistently
+- Fix chrome issues (incorrect use of elements/attributes)

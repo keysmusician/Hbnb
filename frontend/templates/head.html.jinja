@@ -11,8 +11,20 @@
 <link rel="stylesheet" type="text/css" href="../static/styles/common.css?{{ cache_id }}">
 <link rel="stylesheet" type="text/css" href="../static/styles/header.css?{{ cache_id }}">
 <link rel="stylesheet" type="text/css" href="../static/styles/footer.css?{{ cache_id }}">
-<link rel="stylesheet" type="text/css" href="../static/styles/index-08a8516d.css?{{ cache_id }}">
 <link rel="icon" href="../static/images/icon.png?{{ cache_id }}" />
 <script type="module" src="../static/scripts/hbnb.js?{{ cache_id }}"></script>
-<script type="module" src="../static/scripts/index-54ba7bc8.js?{{ cache_id }}"></script>
+{% if config.DEBUG %}
+	<script type="module">
+		import RefreshRuntime from 'http://localhost:5173/@react-refresh'
+		RefreshRuntime.injectIntoGlobalHook(window)
+		window.$RefreshReg$ = () => {}
+		window.$RefreshSig$ = () => (type) => type
+		window.__vite_plugin_react_preamble_installed__ = true
+	</script>
+	<script type="module" src="http://localhost:5173/@vite/client"></script>
+	<script type="module" src="http://localhost:5173/source/index.tsx"></script>
+{% else %}
+	<script type="module" src="../static/scripts/index.js?{{ cache_id }}"></script>
+	<link rel="stylesheet" type="text/css" href="../static/styles/index.css?{{ cache_id }}">
+{% endif %}
 <title>Hbnb</title>

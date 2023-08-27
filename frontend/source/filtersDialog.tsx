@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
-import { theme } from "./theme";
-import { Filters } from ".";
-import { api_routes } from "./routes";
+import { theme } from "./theme.tsx";
+import { Filters } from "./index.tsx";
+import { api_routes } from "./routes.tsx";
 
 
 interface Amenity {
@@ -25,10 +25,10 @@ export function FilterDialog({ showDialog, setFilters }: FilterDialogProps) {
 
 	const [amenities, setAmenities] = useState<Amenity[]>([])
 
-	const animation_duration = 300
+	const animationDuration = 300
 
 	const fade_modal_options: KeyframeAnimationOptions = {
-		duration: animation_duration,
+		duration: animationDuration,
 		fill: "forwards",
 		easing: "ease-in-out",
 	}
@@ -76,6 +76,8 @@ export function FilterDialog({ showDialog, setFilters }: FilterDialogProps) {
 		bathroom_count_name
 	] = ["Amenities", "Bedrooms", "Beds", "Bathrooms"]
 
+	const header_footer_padding = "1rem"
+
 	return <dialog
 		ref={dialogRef}
 		css={{
@@ -107,25 +109,31 @@ export function FilterDialog({ showDialog, setFilters }: FilterDialogProps) {
 					display: "flex",
 					flexDirection: "column",
 					margin: "auto",
-					padding: "1rem",
 					width: "55vw",
 					maxHeight: "60vh"
 				}}
 				onClick={(e) => e.stopPropagation()}
 			>
-				<header css={{
-					display: "flex",
-					alignItems: "center",
-				}}>
-					<CloseFilterDialogButton
-						onClick={closeModal}
-					/>
+				<header
+					css={{
+						display: "flex",
+						alignItems: "center",
+						borderBottom: theme.border.create(),
+						padding: header_footer_padding,
+					}}
+				>
+					<div css={{ flex: 1 }} >
+						<CloseFilterDialogButton
+							onClick={closeModal}
+						/>
+					</div>
+
 					<p css={{
 						fontWeight: "bold",
-						justifySelf: "center"
 					}}>
 						Filters
 					</p>
+					<div css={{ flex: 1 }} />
 				</header>
 				<div
 					css={{
@@ -176,9 +184,11 @@ export function FilterDialog({ showDialog, setFilters }: FilterDialogProps) {
 				</div>
 				<footer
 					css={{
+						alignItems: "center",
+						borderTop: theme.border.create(),
 						display: "flex",
 						justifyContent: "flex-end",
-						borderTop: theme.border.create(),
+						padding: header_footer_padding,
 					}}
 				>
 					<FormSubmitButton title="Apply"

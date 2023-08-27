@@ -1,0 +1,7 @@
+{
+  "source/index.tsx": {
+    "file": "static/scripts/index.js",
+    "isEntry": true,
+    "src": "source/index.tsx"
+  }
+}

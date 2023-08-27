@@ -15,6 +15,19 @@ export default defineConfig({
     rollupOptions: {
       // overwrite default .html entry
       input: './source/index.tsx',
+      output: {
+        entryFileNames: 'static/scripts/[name].js',
+        assetFileNames: (asset) => {
+          if (asset.name.endsWith('.css')) {
+            return `static/styles/[name][extname]`
+          } else if (asset.name.endsWith('.tsx')) {
+            return `static/scripts/[name][extname]`
+          } else {
+            return `static/assets/[name][extname]`
+          }
+        },
+      }
     },
+    outDir: '.',
   },
 })

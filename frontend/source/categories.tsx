@@ -39,39 +39,30 @@ export function FilterBar({ setShowDialog, setFilters }: FilterBarProps) {
   return (
     <article
       css={{
-        "alignItems": "center",
-        "display": "grid",
-        "gridTemplateColumns": "auto 20px 90px",
-        "gridTemplateRows": "auto",
-        "position": "relative",
-        "height": "100%",
-        "width": "100%",
-        "maxWidth": "100%",
-        "boxShadow": boxShadowVisible && "rgba(134, 142, 149, 0.2) 0px 4px 4px -2px",
+        alignItems: "center",
+        display: "grid",
+        gridTemplateColumns: "auto 20px 90px",
+        gridTemplateRows: "auto",
+        position: "relative",
+        height: "100%",
+        maxWidth: "100%",
+        width: "100%",
+        boxShadow: boxShadowVisible && theme.boxShadow.create({ vertical: 4, blur: 4, opacity: 0.1 }),
       }}
     >
       <div
         css={{
-          "position": "relative",
-          "overflowX": "auto",
+          position: "relative",
+          overflowX: "auto",
+          maxHeight: "100%",
+
         }}
       >
-        <div
-          className={`
-                        scroll_button_container
-                        scroll_previous
-                        ${scrollPreviousVisible ?
-              "scroll_button_container_visible" :
-              ""
-            }
-                    `}
-        >
-          <ScrollCategoriesButton
-            disabled={!scrollPreviousVisible}
-            onClick={() => categoriesRef.current?.scroll(-scrollAmount)}
-            arrowDirection="left"
-          />
-        </div>
+        <ScrollCategories
+          direction="left"
+          enabled={scrollPreviousVisible}
+          onClick={() => categoriesRef.current?.scroll(-scrollAmount)}
+        />
         <Categories
           ref={categoriesRef}
           setScrollPreviousVisible={setScrollPreviousVisible}
@@ -80,43 +71,16 @@ export function FilterBar({ setShowDialog, setFilters }: FilterBarProps) {
             setFilters((filters) => ({ ...filters, category_ID: category_id }))
           }
         />
-        <div
-          className={`
-            scroll_button_container
-            scroll_next
-            ${scrollNextVisible ? "scroll_button_container_visible" : ""}
-          `}
-        >
-          <ScrollCategoriesButton
-            disabled={!scrollNextVisible}
-            onClick={() => categoriesRef.current?.scroll(scrollAmount)}
-            arrowDirection="right"
-          />
-        </div>
+        <ScrollCategories
+          direction="right"
+          enabled={scrollNextVisible}
+          onClick={() => categoriesRef.current?.scroll(scrollAmount)}
+        />
       </div>
-      <button
-        css={{
-          "alignItems": "center",
-          "backgroundColor": theme.colors.background,
-          "borderRadius": theme.border.radiusSecondary,
-          "border": theme.border.create(),
-          "boxSizing": "border-box",
-          "display": "flex",
-          "flexDirection": "row",
-          "gap": "10px",
-          "gridColumn": "3",
-          "height": "60%",
-          "justifyContent": "center",
-          "padding": "10px",
-          "cursor": "pointer",
-        }}
-        type="button"
+      <FiltersButton
         onClick={() => setShowDialog(true)}
-      >
-        <icons.filters />
-        <div>Filters</div>
-      </button>
-    </article>
+      />
+    </article >
   )
 }
 
@@ -141,7 +105,11 @@ const Categories = forwardRef<CategoriesHandle, CategoriesProps>(
     const minmax = (n: number, min: number, max: number) =>
       Math.min(Math.max(n, min), max)
 
-    const getScrollMax = () => formRef.current?.scrollLeftMax ?? 0
+    function getScrollMax() {
+      const form = formRef.current
+      if (!form) return 0
+      return form.scrollLeftMax ?? form.scrollWidth - form.clientWidth
+    }
 
     function scroll(scrollAmount: number) {
       const scrollPosition = formRef.current?.scrollLeft ?? 0
@@ -161,9 +129,7 @@ const Categories = forwardRef<CategoriesHandle, CategoriesProps>(
     }
 
     // Assigns scroll as a function callable from outside the component
-    useImperativeHandle(ref, () => ({
-      scroll,
-    }));
+    useImperativeHandle(ref, () => ({ scroll }));
 
     function updateScrollButtonVisibility(scrollPosition?: number) {
       scrollPosition = scrollPosition ?? formRef.current?.scrollLeft ?? 0
@@ -235,21 +201,24 @@ const Categories = forwardRef<CategoriesHandle, CategoriesProps>(
     const border_bottom_width = 2
 
     return (
-      <form
+      <article
         ref={formRef}
         css={{
-          "display": "flex",
-          "flexDirection": "row",
-          "flexWrap": "nowrap",
-          "gap": "30px",
-          "height": "100%",
-          "justifyContent": "space-between",
-          "margin": "0px",
-          "overflowX": "auto",
-          "padding": "0px",
-          "scrollbarWidth": "none",
-          "whiteSpace": "nowrap",
-          "width": "100%"
+          display: "flex",
+          flexDirection: "row",
+          flexWrap: "nowrap",
+          gap: "30px",
+          height: "100%",
+          justifyContent: "space-between",
+          margin: "0px",
+          overflowX: "auto",
+          padding: "0px",
+          scrollbarWidth: "none",
+          whiteSpace: "nowrap",
+          width: "100%",
+          "::-webkit-scrollbar": {
+            display: "none"
+          }
         }}
         className="categories"
         onScroll={(scrollEvent) =>
@@ -263,23 +232,21 @@ const Categories = forwardRef<CategoriesHandle, CategoriesProps>(
             const fade_duration = .15
 
             return <li
-              className={`category`}
               css={{
-                // animation: `${animations.fade_color_out} ${fade_duration}s ease-in forwards`,
-                "alignItems": "center",
-                "borderBottom": theme.border.create({
-                  "width": border_bottom_width,
-                  "color": colors.transparent,
+                alignItems: "center",
+                borderBottom: theme.border.create({
+                  width: border_bottom_width,
+                  color: colors.transparent,
                 }),
-                "boxSizing": "border-box",
-                "color": theme.colors.tertiary,
-                "display": "flex",
-                "flexDirection": "column",
-                "flexWrap": "nowrap",
-                "fontSize": "12px",
-                "height": "100%",
-                "justifyContent": "space-around",
-                "paddingBottom": "12px",
+                boxSizing: "border-box",
+                color: theme.colors.tertiary,
+                display: "flex",
+                flexDirection: "column",
+                flexWrap: "nowrap",
+                fontSize: "12px",
+                height: "100%",
+                justifyContent: "space-around",
+                paddingBottom: "12px",
                 transition: `color ${fade_duration}s ease-in-out, border-bottom ${fade_duration}s ease-in-out`,
                 ":hover": (index !== selectedIndex) && {
                   color: theme.colors.selected,
@@ -306,22 +273,22 @@ const Categories = forwardRef<CategoriesHandle, CategoriesProps>(
               <div
                 ref={animationContainerRef}
                 css={{
-                  'display': 'inherit',
-                  'flexDirection': 'inherit',
-                  'alignItems': 'inherit',
-                  'justifyContent': 'inherit',
+                  display: 'inherit',
+                  flexDirection: 'inherit',
+                  alignItems: 'inherit',
+                  justifyContent: 'inherit',
                 }}
                 onMouseDown={mouseEvent => scale(mouseEvent.currentTarget!, 0.95)}
                 onMouseUp={mouseEvent => scale(mouseEvent.currentTarget!, 1)}
               >
                 <span
                   css={{
-                    "display": "flex",
-                    "height": "40px",
-                    "margin": "5px",
-                    "textAlign": "center",
-                    "alignItems": "center",
-                    "width": "40px"
+                    display: "flex",
+                    height: "40px",
+                    margin: "2px",
+                    textAlign: "center",
+                    alignItems: "center",
+                    width: "40px"
                   }}
                 >
                   <icons.house
@@ -335,55 +302,160 @@ const Categories = forwardRef<CategoriesHandle, CategoriesProps>(
             </li>
           })
         }
-      </form>
+      </article>
     )
   })
 
 
 interface ScrollCategoriesButtonProps {
   disabled: boolean
-  onClick: () => void
   arrowDirection: "left" | "right"
+  onClick: () => void
 }
 function ScrollCategoriesButton({ disabled, onClick, arrowDirection }: ScrollCategoriesButtonProps) {
 
-  const arrowLine = theme.border.create({
-    "width": 2,
-    "color": theme.colors.secondary,
-  })
+  const size = "2em"
 
   return <button
     className="scroll_button"
     disabled={disabled}
     css={{
-      "cursor": disabled ? "default" : "pointer",
+      alignItems: "center",
+      border: theme.border.create({
+        width: 1,
+        color: theme.colors.focused,
+      }),
+      backgroundColor: "white",
+      borderRadius: "100%",
+      cursor: disabled ? "default" : "pointer",
+      display: "flex",
+      height: size,
+      justifyContent: "center",
+      padding: ".5em",
+      pointerEvents: disabled ? "none" : "auto",
+      textAlign: "end",
+      transition: "scale .1s ease-in-out",
+      width: size,
+      ":hover": {
+        scale: "1.05",
+        boxShadow: theme.boxShadow.create({
+          vertical: 6,
+          blur: 12,
+          opacity: 0.25
+        }),
+      },
+
     }}
     type="button"
     onClick={onClick}
   >
-    <div
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 32 32"
+      aria-hidden="true"
+      role="presentation"
+      focusable="false"
       css={{
-        display: "flex",
-        alignItems: "center",
+        fill: "none",
+        height: "12px",
+        width: "12px",
+        stroke: theme.colors.secondary,
+        strokeWidth: "5.33333",
+        overflow: "visible",
+        rotate: arrowDirection === "right" ? "180deg" : "0deg",
+      }}
+    >
+      <path
+        fill="none"
+        d="M20 28 8.7 16.7a1 1 0 0 1 0-1.4L20 4"
+      ></path></svg>
+  </button >
+}
+
+interface ScrollCategoriesProps {
+  direction: "left" | "right"
+  enabled: boolean
+  onClick: () => void
+}
+function ScrollCategories({ direction, enabled, onClick }: ScrollCategoriesProps) {
+
+  const divRef = React.useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const button = divRef.current
+
+    if (!button) return
+
+    button.animate(
+      [
+        { opacity: 0 },
+        { opacity: 1 },
+      ],
+      {
+        duration: 300,
+        iterations: 1,
+        easing: 'ease-out',
+        direction: enabled ? 'normal' : 'reverse',
+        fill: 'forwards',
+      }
+    )
+
+
+  }, [enabled])
+
+
+  return (
+    <div
+      ref={divRef}
+      css={{
+        alignItems: direction === "left" ? "flex-start" : "flex-end",
         boxSizing: "border-box",
+        display: "flex",
+        flexDirection: "column",
         height: "100%",
-        maxWidth: "7px",
+        justifyContent: "center",
+        pointerEvents: "none",
+        position: "absolute",
+        top: "0",
+        width: "10%",
+        backgroundImage: `linear-gradient(to ${direction}, rgb(255 255 255/0), white 50%)`,
+        [direction]: "0",
         overflow: "hidden",
-        transform: arrowDirection == "right" && "rotate(180deg)",
-      }}>
-      <div
-        className="scroll_button_arrow"
-        css={{
-          "transform": `rotate(45deg)`,
-          "margin": "1px",
-          "minWidth": "7.5px",
-          "minHeight": "7.5px",
-          "borderBottom": arrowLine,
-          "borderLeft": arrowLine,
-          "backgroundColor": "transparent",
-          "borderRadius": "0 1.5px",
-          "boxSizing": "border-box",
-        }} />
+      }}
+    >
+      <ScrollCategoriesButton
+        disabled={!enabled}
+        onClick={onClick}
+        arrowDirection={direction}
+      />
     </div>
-  </button>
+  )
+}
+
+
+function FiltersButton({ onClick }: { onClick: () => void }) {
+  return (
+    <button
+      css={{
+        alignItems: "center",
+        backgroundColor: theme.colors.background,
+        borderRadius: theme.border.radiusSecondary,
+        border: theme.border.create(),
+        boxSizing: "border-box",
+        display: "flex",
+        flexDirection: "row",
+        gap: "10px",
+        gridColumn: "3",
+        height: "60%",
+        justifyContent: "center",
+        padding: "10px",
+        cursor: "pointer",
+      }}
+      type="button"
+      onClick={onClick}
+    >
+      <icons.filters />
+      <div>Filters</div>
+    </button>
+  )
 }

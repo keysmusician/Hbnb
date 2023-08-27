@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import { theme, icons } from './theme'
-import { api_routes } from './routes'
+import { theme, icons } from './theme.tsx'
+import { api_routes } from './routes.tsx'
 
 
 namespace styles {
@@ -54,11 +54,66 @@ export function SearchBar({ setFilters }: SearchBarProps) {
   const [selectedStates, setSelectedStates] =
     useState<Set<string>>(new Set())
 
-  const [guestCount, setGuestCount] = useState(1)
+  const [guestCount, setGuestCount] = useState()
 
   const [selectedButton, setSelectedButton] = useState<SearchButton>()
 
   const max_guests = 20
+
+  const overlay = document.getElementById('overlay')
+
+  Object.assign(overlay.style, {
+    "background-color": "black",
+    display: "block",
+    opacity: 0,
+    "pointer-events": active ? "auto" : "none",
+    position: "fixed",
+    top: "81px",
+    "min-width": "100vw",
+    "min-height": "calc(100vh - 81px)",
+    "z-index": 1,
+  })
+
+  useEffect(() => {
+    const resetSearchBarState = () => {
+      setActive(false)
+      setSelectedButton(undefined)
+    }
+
+    const handleKeyUp = (keyEvent: KeyboardEvent) => keyEvent.key === "Escape"
+      && resetSearchBarState()
+
+    if (active) {
+      window.addEventListener("keyup", handleKeyUp)
+
+      if (overlay) {
+        overlay.addEventListener("click", resetSearchBarState)
+
+        overlay.animate([
+          { opacity: 0.3 },
+        ], {
+          duration: theme.animation.fadeDuration,
+          easing: "ease-out",
+          fill: "forwards",
+        })
+      }
+    } else {
+      window.removeEventListener("keyup", handleKeyUp)
+
+      if (overlay) {
+        overlay.removeEventListener("click", resetSearchBarState)
+
+        overlay.animate([
+          { opacity: 0 },
+        ], {
+          duration: theme.animation.fadeDuration,
+          easing: "ease-in",
+          fill: "forwards",
+        })
+      }
+
+    }
+  }, [active])
 
   return (
     <div
@@ -78,7 +133,7 @@ export function SearchBar({ setFilters }: SearchBarProps) {
             color: theme.colors.focused,
           }),
           borderRadius: theme.border.radiusPrimary,
-          boxShadow: `0 3px 5px -2px ${theme.colors.border}`,
+          boxShadow: theme.boxShadow.create({ opacity: 0.15 }),
           cursor: active ? "auto" : "pointer",
           height: "3rem",
           minWidth: active ? "60vw" : "0vw",
@@ -86,7 +141,7 @@ export function SearchBar({ setFilters }: SearchBarProps) {
           transition: theme.transition.create({ property: "box-shadow" }) +
             ", " + theme.transition.create({ property: "min-width" }),
           ":hover": {
-            boxShadow: `0 3px 5px 0px ${theme.colors.border}`,
+            boxShadow: theme.boxShadow.create({ opacity: 0.25 }),
           }
         }}
 
@@ -120,6 +175,8 @@ export function SearchBar({ setFilters }: SearchBarProps) {
           }}
         >
           <input
+            name='add_guests'
+            title='Add guests'
             type='text'
             placeholder='Add guests'
             min={1}
@@ -231,20 +288,20 @@ function VerticalDivider() {
 function Dropdown({ visible, children }: { visible: boolean, children?: React.ReactNode }) {
   return (
     <article css={{
-      "backgroundColor": theme.colors.background,
-      "border": theme.border.create(),
-      "borderRadius": theme.border.radiusPrimary,
-      "boxShadow": theme.boxShadow.create(),
-      "boxSizing": "border-box",
-      "display": visible ? "flex" : "none",
-      "justifyContent": "center",
-      "left": 0,
-      "maxHeight": "50vh",
-      "marginTop": "0.5rem",
-      "overflowY": "auto",
-      "position": "absolute",
-      "top": "100%",
-      "width": "100%",
+      backgroundColor: theme.colors.background,
+      border: theme.border.create(),
+      borderRadius: theme.border.radiusPrimary,
+      boxShadow: theme.boxShadow.create(),
+      boxSizing: "border-box",
+      display: visible ? "flex" : "none",
+      justifyContent: "center",
+      left: 0,
+      maxHeight: "50vh",
+      marginTop: "0.5rem",
+      overflowY: "auto",
+      position: "absolute",
+      top: "100%",
+      width: "100%",
     }} >
       {children}
     </article>

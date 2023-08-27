@@ -7,7 +7,7 @@ export namespace colors {
 	export const AirBnbRed2 = "#E00B41"
 	export const AirBnbGrey = 'rgb(113, 113, 113)'
 	export const AirBnbGrey2 = 'rgb(221, 221, 221)'
-	export const AirBnbGrey3 = 'rgb(235, 235, 235)'
+	export const AirBnbGrey3 = lightGrey
 }
 
 export namespace typography {
@@ -91,7 +91,9 @@ export namespace theme {
 			property = transitionProperty,
 		} = {}) =>
 			`${property} ${duration}s ${timingFunction} ${delay}s`
-
+	}
+	export namespace animation {
+		export const fadeDuration = 200
 	}
 
 	// Suggested by CoPilot:
@@ -155,6 +157,10 @@ export namespace icons {
 		xmlnsXlink="http://www.w3.org/1999/xlink"
 		viewBox="0 0 200 200"
 		xmlSpace="preserve"
+		css={{
+			"height": "100%",
+			"width": "100%",
+		}}
 	>
 		<g>
 			<path d="M111.129,58.105c-1.787-1.787-4.682-1.787-6.469,0l-47.404,47.401c-1.786,1.786-1.786,4.682,0,6.468   c0.894,0.893,2.063,1.34,3.234,1.34c1.17,0,2.341-0.447,3.234-1.339l6.074-6.074v36.362c0,2.526,2.047,4.574,4.573,4.574h67.038   c2.526,0,4.573-2.048,4.573-4.574v-36.368l6.079,6.079c1.787,1.786,4.682,1.786,6.469,0c1.786-1.786,1.786-4.682,0-6.468   L111.129,58.105z M136.837,137.689H78.945V96.754l28.949-28.948l28.942,28.942V137.689z" />
