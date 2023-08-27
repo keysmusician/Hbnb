@@ -32,9 +32,6 @@ RUN <<HEREDOC_END
 	rm /etc/nginx/sites-enabled/default
 HEREDOC_END
 
-# Change API root URL to deployment host:
-RUN echo "export const API_root = 'https://hbnb.fly.dev/api/'" > frontend/static/scripts/api_root.js
-
 COPY data/Hbnb_FileStorage.json data/Hbnb_FileStorage.json
 
 ENV HBNB_TYPE_STORAGE='file'

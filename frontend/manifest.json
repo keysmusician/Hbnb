@@ -4,9 +4,6 @@
     "src": "source/index.css"
   },
   "source/index.tsx": {
-    "css": [
-      "static/styles/index.css"
-    ],
     "file": "static/scripts/index.js",
     "isEntry": true,
     "src": "source/index.tsx"
