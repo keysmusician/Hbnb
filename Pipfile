@@ -25,11 +25,12 @@ pyyaml = "==6.0"
 setproctitle = "==1.3.2"
 six = "==1.16.0"
 sqlalchemy = "==1.4.46"
-werkzeug = ">=2.2.2"
+werkzeug = ">=2.3.8"
 zipp = "==3.11.0"
 
 [dev-packages]
 pep8 = "*"
+pip_audit = "*"
 
 [requires]
 python_version = "3.8"

@@ -4,7 +4,7 @@ FROM python:3.8
 
 WORKDIR /app
 
-RUN apt-get -y update; apt-get -y upgrade; apt-get -y install nginx
+RUN apt-get -y update; apt-get -y upgrade; apt-get -y install nginx mysql-server
 
 COPY requirements.txt .
 
