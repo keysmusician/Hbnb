@@ -1,10 +1,12 @@
 # syntax=docker/dockerfile:1
 
-FROM python:3.8
+FROM python:3.12
 
 WORKDIR /app
 
-RUN apt-get -y update; apt-get -y upgrade; apt-get -y install nginx
+RUN apt-get -y update;\
+	apt-get -y upgrade;\
+	apt-get -y install nginx
 
 COPY requirements.txt .
 
@@ -39,5 +41,5 @@ ENV HBNB_TYPE_STORAGE='file'
 # This should match [[services]] > internal_port in fly.toml and the Hbnb site's Nginx configuration:
 EXPOSE 8080
 
-# Specifying Bash as the interpreter makes it clear what's wrong if the file accidentally contains CRLF
-CMD bash ./config/docker_entrypoint.sh
+# Specifying Bash as the interpreter makes it clear what's wrong if the file accidentally contains CRLF. Exec makes the shell process the main process, so that signals are properly handled.
+CMD exec bash ./config/docker_entrypoint.sh

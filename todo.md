@@ -20,6 +20,14 @@
 
 - Responsive layouts
 
-- Remove duplicate requests for assets
-
 - Fix chrome issues (incorrect use of elements/attributes)
+
+- Implement database storage
+
+- Add a firewall to the Docker container running the application.
+
+- Add ratings to rooms
+
+- Improve the styling and content of rooms and 404 pages
+
+- Migrate to client-side rendering (React)
