@@ -288,7 +288,7 @@ Our access to those hosts has since expired, so I have now deployed the project 
 
 There are a few improvements I can implement to make this project more robust and similar to Airbnb's website:
 
-Switch over to the database storage engine (the deployed version uses the file storage engine).
+- Switch over to the database storage engine (the deployed version uses the file storage engine).
 - Place ratings
 - Images of places
 - Improved styling and content of places pages and 404 page
