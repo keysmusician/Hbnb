@@ -31,3 +31,5 @@
 - Improve the styling and content of rooms and 404 pages
 
 - Migrate to client-side rendering (React)
+
+- Fix API indicator showing unavailable from the room views
