@@ -33,3 +33,7 @@
 - Migrate to client-side rendering (React)
 
 - Fix API indicator showing unavailable from the room views
+
+- Fix category scroll button's drop shadow clipping
+
+- Add links to your portfolio and Holberton school?
